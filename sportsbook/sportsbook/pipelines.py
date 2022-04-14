@@ -19,24 +19,24 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-class WorldOfSweetsImageDownloader(ImagesPipeline):
-    # CONVERTED_ORIGINAL = re.compile('^/[0-9,a-f,_,-,/]+.jpg$')
-
+# class WorldOfSweetsImageDownloader(ImagesPipeline):
+    #CONVERTED_ORIGINAL = re.compile('^/[0-9,a-f,_,-,/]+.jpg$')
     # name information coming from the spider, in each item
     # add this information to Requests() for individual images downloads
     # through "meta" dict
-    def get_media_requests(self, item, info):
-        return [Request(item.get('image_urls'), meta={'title': item["image"]})]
+
+    #def get_media_requests(self, item, info):
+    #    return [Request(item.get('image_urls'), meta={'title': item["image"]})]
 
     # this is where the image is extracted from the HTTP response
-    def get_images(self, response, request, info):
-        for key, image, buf, in super(WorldOfSweetsImageDownloader, self).get_images(response, request, info):
+    # def get_images(self, response, request, info):
+    #    for key, image, buf, in super(WorldOfSweetsImageDownloader, self).get_images(response, request, info):
             # if self.CONVERTED_ORIGINAL.match(key):
-            key = self.change_filename(key, response)
-            yield key, image, buf
+    #        key = self.change_filename(key, response)
+    #        yield key, image, buf
 
-    def change_filename(self, key, response):
-        return response.meta['title']
+    # def change_filename(self, key, response):
+    #    return response.meta['title']
 
 
 class SportsbookXslxExportPipeline(object):

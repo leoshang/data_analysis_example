@@ -9,7 +9,8 @@ from sportsbook.spiders.MatchEuroOdds import MatchEuroOdds
 from sportsbook.spiders.MatchAsiaHandicap import MatchAsiaHandicap
 from sportsbook.items import EuroOddsPipelineItem
 
-_SPORTSBOOK_CONFIG_FILE_ = 'sportsbook_spider.ini'
+# absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
+_SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/sportsbook_spider.ini'
 
 _KEY_MATCH_DAY_ = 'matchday'
 _KEY_INSTITUTION_NAME_ = 'institution_name'
@@ -39,13 +40,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
     match_fields = ['matchname', 'matchname_cn', 'matchtime', 'hometeam', 'guestteam',
                     'hometeam_cn', 'guestteam_cn', 'season']
 
-    institue_list = ['10BET', '12bet', 'Bet 365', 'Manbetx', 'Bet-at-home', 'Bwin', 'Coral', 'Eurobet',
-                     'Interwetten', 'Nordicbet', 'Oddset', 'Pinnacle', 'Crown', 'SNAI', 'TOTO', 'Macauslot',
-                     'Sportingbet', '188bet', 'Ladbrokes', 'Mansion88', 'William Hill', 'Sbobet', 'Easybets',
-                     'Betfair', 'Betsson', 'Matchbook', 'Marathon', 'Unibet', '5 Dimes', '888Sport', 'Lottery Official'
-                     'Betsson Sportsbook', 'Betfair UK Sportsbook', 'Betfair ES Sportsbook', 'Betfair SB',
-                     'BetVictor', 'Bovada', 'CashPoint', 'Dafabet', 'Danske Spil', 'iddaa', 'Intralot',
-                     'Norsk tipting', 'Paddy Power', 'Sisal.it', 'SNAI.it', 'Svenska Spel', 'Tipico']
+    institue_list = ['Ladbrokes', 'William Hill']
 
 
     @staticmethod
@@ -64,7 +59,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
         return dict1
 
     def __init__(self, *a, **kw):
-        print(SportsbookJavascriptParser.data_feed_config.sections())
+        # print(SportsbookJavascriptParser.data_feed_config.sections())
         super(SportsbookJavascriptParser, self).__init__(*a, **kw)
         start_url = SportsbookJavascriptParser.config_section_map('General')['start_urls']
         self.start_urls = []
@@ -105,15 +100,19 @@ class SportsbookJavascriptParser(scrapy.Spider):
         odds_rows = response.xpath(self.SCRIPT_TAG)
         for index, odd_row in enumerate(odds_rows):
             script_tag = odd_row.extract().encode(_UTF_8_)
+            print(script_tag)
             idx_begin = script_tag.index(_JS_SRC_LOC_)
+            if _JS_CHARSET_LOC_ not in script_tag or _JS_SRC_LOC_ not in script_tag:
+                continue
             idx_end = script_tag.index(_JS_CHARSET_LOC_)
+            print(idx_begin)
+            print(idx_end)
             if idx_begin > 0 and idx_end > 0:
                 script_link = script_tag[idx_begin+5:idx_end]
                 print(script_link)
-                if script_link.startswith(_JS_DOMAIN_) and script_link.endswith(_JS_SUFFIX_):
-                    # print('found')
-                    request = scrapy.Request(script_link,
-                               callback=self.parse_js)
+                if script_link.startswith(_JS_DOMAIN_) and _JS_SUFFIX_ in script_link:
+                    print('target javascript site found')
+                    request = scrapy.Request(script_link, callback=self.parse_js)
                     yield request
                     break
             else:
