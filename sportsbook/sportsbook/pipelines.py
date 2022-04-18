@@ -14,7 +14,7 @@ from scrapy.http import Request
 from scrapy import signals
 import xlsxwriter
 
-from sportsbook.exporter.csv_item_exporter import WorldOfSweetsCsvItemExporter
+from sportsbook.exporter.csv_item_exporter import OddsExporter
 reload(sys)
 sys.setdefaultencoding('utf8')
 

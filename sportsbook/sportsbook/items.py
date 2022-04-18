@@ -13,31 +13,37 @@ import scrapy
 
 
 class EuroOddsPipelineItem(scrapy.Item):
-    # define the combined primary key: matchname, hometeam, guestteam, matchday.
-    matchname = scrapy.Field()
-    matchday = scrapy.Field()
-    hometeam = scrapy.Field()
-    guestteam = scrapy.Field()
+    # define the combined primary key:
+    # match_id, match_time,
+    # bookie_id, bookie_name_en, bookie_name_cn,
+    # open_home_win, open_draw, open_guest_win,
+    # end_home_win, end_draw, end_guest_win,
+    # open_home_prob, open_draw_prob, open_guest_prob,
+    # end_home_win_prob, end_draw_prob, end_guest_win_prob
 
-    matchname_cn = scrapy.Field()
-    matchtime = scrapy.Field()
-    hometeam_cn = scrapy.Field()
-    guestteam_cn = scrapy.Field()
-    season = scrapy.Field()
+    match_time = scrapy.Field()
+    match_id = scrapy.Field()
+    bookie_id = scrapy.Field()
+    bookie_name_en = scrapy.Field()
+    bookie_name_cn = scrapy.Field()
 
-    institute_id = scrapy.Field()
-    institute_name = scrapy.Field()
-    # init_odds is type of EuroOdds
-    init_odds = scrapy.Field()
-    # final odds
-    final_odds = scrapy.Field()
-    calculated_init_asia_handicaps = scrapy.Field()
-    calculated_final_asia_handicaps = scrapy.Field()
+    open_home_win = scrapy.Field()
+    open_draw = scrapy.Field()
+    open_guest_win = scrapy.Field()
 
-    #def __str__(self):
-    #    return "matchname: {}; matchtime: {}; hometeam: {}; guestteam: {}; " \
-    #           "season: {} ".format(self['matchname'], self['matchtime'],
-    #                                                     self['hometeam'], self['guestteam'],
-    #                                                     self['season'])
+    end_home_win = scrapy.Field()
+    end_draw = scrapy.Field()
+    end_guest_win = scrapy.Field()
+
+    open_home_prob = scrapy.Field()
+    open_draw_prob = scrapy.Field()
+    open_guest_prob = scrapy.Field()
+
+    end_home_win_prob = scrapy.Field()
+    end_draw_prob = scrapy.Field()
+    end_guest_win_prob = scrapy.Field()
+
+    open_asia_handicaps = scrapy.Field()
+    end_asia_handicaps = scrapy.Field()
 
 
