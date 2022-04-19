@@ -22,20 +22,20 @@ class EuroOddsPipelineItem(scrapy.Item):
     # end_home_win, end_draw, end_guest_win,
     # open_home_prob, open_draw_prob, open_guest_prob,
     # end_home_win_prob, end_draw_prob, end_guest_win_prob
-
-    match_id = scrapy.Field()
-    match_time = scrapy.Field()
-    bookie_id = scrapy.Field()
-    bookie_name_en = scrapy.Field()
-    bookie_name_cn = scrapy.Field()
-
-    matchday = scrapy.Field()
-    season = scrapy.Field()
     matchname = scrapy.Field()
+    match_id = scrapy.Field()
+    season = scrapy.Field()
+    matchday = scrapy.Field()
+    match_time = scrapy.Field()
+
     hometeam = scrapy.Field()
     guestteam = scrapy.Field()
     hometeam_cn = scrapy.Field()
     guestteam_cn = scrapy.Field()
+
+    bookie_id = scrapy.Field()
+    bookie_name_en = scrapy.Field()
+    bookie_name_cn = scrapy.Field()
 
     open_home_win = scrapy.Field()
     open_draw = scrapy.Field()

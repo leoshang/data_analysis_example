@@ -64,11 +64,11 @@ class SportsbookXslxExportPipeline(object):
         # hometeam, guestteam,
         # hometeam_cn, guestteam_cn,
         # self.row_count += 1
-        self.worksheet.write(self.row_count, 0, '比赛Id'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 1, '赛季'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 2, '比赛日'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 3, '比赛时间'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 4, '比赛'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 0, '联赛名称'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 1, '联赛Id'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 2, '赛季'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 3, '比赛日'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 4, '比赛时间'.encode('utf-8'))
         self.worksheet.write(self.row_count, 5, '主队'.encode('utf-8'))
         self.worksheet.write(self.row_count, 6, '客队'.encode('utf-8'))
         self.worksheet.write(self.row_count, 7, '主队中文'.encode('utf-8'))

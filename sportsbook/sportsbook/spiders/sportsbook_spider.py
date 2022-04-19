@@ -130,7 +130,6 @@ class SportsbookJavascriptParser(scrapy.Spider):
         # for each var, filter the desired and populate it to match item
         for v in var_list:
             self.populate_match_odds(v, euro_odds)
-        # print(euro_odds_item)
 
     def cleanup_jsdata(self, js_record):
         js_var = js_record.encode(_UTF_8_)
