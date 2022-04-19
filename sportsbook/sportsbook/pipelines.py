@@ -9,12 +9,12 @@ import copy
 import image
 import sys
 
-from scrapy.contrib.pipeline.images import ImagesPipeline
+from scrapy.pipelines.images import ImagesPipeline
 from scrapy.http import Request
 from scrapy import signals
 import xlsxwriter
 
-from sportsbook.exporter.csv_item_exporter import OddsExporter
+from sportsbook.exporter.oddsexporter import OddsExporter
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -60,13 +60,34 @@ class SportsbookXslxExportPipeline(object):
 
     def output_header(self):
         # self.worksheet.write(self.row_count, 5, self.odds_company_title)
+        # matchday, season, matchname,
+        # hometeam, guestteam,
+        # hometeam_cn, guestteam_cn,
         # self.row_count += 1
-        self.worksheet.write(self.row_count, 0, '轮次'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 1, '时间'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 2, '主隊'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 3, '比分'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 4, '客隊'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 5, '让球'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 0, '比赛Id'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 1, '赛季'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 2, '比赛日'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 3, '比赛时间'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 4, '比赛'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 5, '主队'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 6, '客队'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 7, '主队中文'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 8, '客队中文'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 9, '博彩公司Id'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 10, '博彩公司英文名称'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 11, '博彩公司中文名称'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 12, '初盘主胜赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 13, '初盘平局赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 14, '初盘客胜赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 15, '即时终盘主胜赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 16, '即时终盘平局赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 17, '即时终盘客胜赔付'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 18, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 19, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 20, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 21, '即时终盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 22, '即时终盘平局概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 23, '即时终盘客胜概率'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -74,12 +95,22 @@ class SportsbookXslxExportPipeline(object):
 
     def process_item(self, item, spider):
         # print('item[%s] to be processed:' % (item['name']))
-        # write 'host_team','score','guest_team','initial_odd','final_odd'
-        self.worksheet.write(self.row_count, 0, item['season_round'])
-        self.worksheet.write(self.row_count, 1, item['round_date'])
-        self.worksheet.write(self.row_count, 2, item['host_team'])
-        self.worksheet.write(self.row_count, 3, item['score'])
-        self.worksheet.write(self.row_count, 4, item['guest_team'])
-        self.worksheet.write(self.row_count, 5, item['asia_handicap'])
+        self.worksheet.write(self.row_count, 0, item['match_id'])
+        self.worksheet.write(self.row_count, 1, item['match_time'])
+        self.worksheet.write(self.row_count, 2, item['bookie_id'])
+        self.worksheet.write(self.row_count, 3, item['bookie_name_en'])
+        self.worksheet.write(self.row_count, 4, item['bookie_name_cn'])
+        self.worksheet.write(self.row_count, 5, item['open_home_win'])
+        self.worksheet.write(self.row_count, 6, item['open_draw'])
+        self.worksheet.write(self.row_count, 7, item['open_guest_win'])
+        self.worksheet.write(self.row_count, 8, item['end_home_win'])
+        self.worksheet.write(self.row_count, 9, item['end_draw'])
+        self.worksheet.write(self.row_count, 10, item['end_guest_win'])
+        self.worksheet.write(self.row_count, 11, item['open_home_prob'])
+        self.worksheet.write(self.row_count, 12, item['open_draw_prob'])
+        self.worksheet.write(self.row_count, 13, item['open_guest_prob'])
+        self.worksheet.write(self.row_count, 14, item['end_home_win_prob'])
+        self.worksheet.write(self.row_count, 15, item['end_draw_prob'])
+        self.worksheet.write(self.row_count, 16, item['end_guest_win_prob'])
         self.row_count += 1
         return item

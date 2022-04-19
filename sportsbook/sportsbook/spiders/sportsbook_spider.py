@@ -37,10 +37,10 @@ class SportsbookJavascriptParser(scrapy.Spider):
     data_feed_config = configparser.ConfigParser()
     data_feed_config.read(_SPORTSBOOK_CONFIG_FILE_)
 
-    match_fields = ['matchname', 'matchname_cn', 'matchtime', 'hometeam', 'guestteam',
+    match_fields = ['matchname', 'matchday', 'hometeam', 'guestteam',
                     'hometeam_cn', 'guestteam_cn', 'season']
 
-    institue_list = ['Ladbrokes', 'William Hill']
+    institue_list = ['Ladbrokes', 'Oddset', 'William Hill']
 
     @staticmethod
     def config_section_map(section):
@@ -95,7 +95,6 @@ class SportsbookJavascriptParser(scrapy.Spider):
     def parse(self, response):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
-
         odds_rows = response.xpath(self.SCRIPT_TAG)
         for index, odd_row in enumerate(odds_rows):
             script_tag = odd_row.extract().encode(_UTF_8_)
@@ -111,7 +110,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
                 print(script_link)
                 if script_link.startswith(_JS_DOMAIN_) and _JS_SUFFIX_ in script_link:
                     print('target javascript site found')
-                    request = scrapy.Request(script_link, callback=self.parse_js)
+                    request = scrapy.Request(script_link, callback=self.extract_euro_odds)
                     yield request
                     break
             else:
@@ -119,18 +118,18 @@ class SportsbookJavascriptParser(scrapy.Spider):
             # citem = SportsbookItem()
             # yield citem
 
-    def parse_js(self, response):
+    def extract_euro_odds(self, response):
         all_odds = response.text.encode(_UTF_8_)
         # print(all_odds)
         # @TODO populate later match_euro_odds into eu_pipeline_item
         eu_pipeline_item = EuroOddsPipelineItem()
-        match_euro_odds = MatchEuroOdds()
+        euro_odds = EuroOdds()
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
         var_list = all_odds_oneline.split(_SPLITTOR_VAR_)
 
         # for each var, filter the desired and populate it to match item
         for v in var_list:
-            self.populate_match_odds(v, match_euro_odds)
+            self.populate_match_odds(v, euro_odds)
         # print(euro_odds_item)
 
     def cleanup_jsdata(self, js_record):
@@ -149,87 +148,61 @@ class SportsbookJavascriptParser(scrapy.Spider):
         # print(js_var)
         return js_var
 
-    def populate_match_odds(self, js_record, match_euro_odds):
+    def populate_match_odds(self, js_record, euro_odds):
         js_var = self.cleanup_jsdata(js_record)
         # print(js_var)
         var_key_val = js_var.split("=")
         # print(var_key_val)
         if _KEY_MATCH_TIME_ == var_key_val[0].lower():
-            self.extract_matchday(var_key_val[1], match_euro_odds)
+            self.extract_matchday(var_key_val[1], euro_odds)
 
         if var_key_val[0].lower() in self.match_fields:
-            match_euro_odds[var_key_val[0].lower()] = var_key_val[1]
+            euro_odds[var_key_val[0].lower()] = var_key_val[1]
 
         if var_key_val[0] == _JS_VAR_GAME_:
-            self.extract_all_game_odds(var_key_val[1], match_euro_odds)
+            self.extract_all_game_odds(var_key_val[1], euro_odds)
 
         if var_key_val[0] == _JS_VAR_GAME_DETAIL_:
-            self.handle_game_detail(var_key_val[1], match_euro_odds)
+            self.handle_game_detail(var_key_val[1], euro_odds)
 
-    def extract_matchday(self, match_datetime, match_euro_odds):
+    def extract_matchday(self, match_datetime, euro_odds):
         # '2017,08-1,11,18,45,00'
         tm = match_datetime.split(',')
         matchday = tm[0] + '-' + tm[1]
         # print(matchday)
-        match_euro_odds[_KEY_MATCH_DAY_] = matchday
+        euro_odds[_KEY_MATCH_DAY_] = matchday
 
-    def extract_all_game_odds(self, game, match_euro_odds):
+    def extract_all_game_odds(self, game, euro_odds):
         vendorlist = self.cleanup_var_game(game)
         # print(vendorlist)
         # print(len(vendorlist))
         for item in vendorlist:
             itemstr = item.encode(_UTF_8_)
-            self.append_institution_odds(itemstr, match_euro_odds)
+            self.append_institution_odds(itemstr, euro_odds)
 
-    def append_institution_odds(self, oddstr, match_euro_odds):
+    def append_institution_odds(self, oddstr, euro_odds):
         odds_values = oddstr.split('|')
         # print(odds_values[2]) # institue_name
         if odds_values[2] in self.institue_list:
-            print(oddstr)
-            match_euro_odds[_KEY_INSTITUTION_NAME_] = odds_values[2]
-            odds = EuroOdds(
-                # odds_values[],
-                # match_id
-                odds_values[0],
-                # match time
-                odds_values[20],
-                # bookie id
-                odds_values[1],
-
-                # bookie english name
-                odds_values[2],
-                # bookie chinese name
-                odds_values[21],
-
-                # 初盘 主胜赔付
-                odds_values[3],
-                # 初盘 平局赔付
-                odds_values[4],
-                # 初盘 客胜赔付
-                odds_values[5],
-
-                # 即时终盘 主胜赔付
-                odds_values[10],
-                # 即时终盘 平局赔付
-                odds_values[11],
-                # 即时终盘 客胜赔付
-                odds_values[12],
-
-                # 初盘换算主胜概率
-                odds_values[6],
-                # 初盘换算平局概率
-                odds_values[7],
-                # 初盘换算客胜概率
-                odds_values[8],
-
-                # 即时终盘换算主胜概率
-                odds_values[13],
-                # 即时终盘换算平局概率
-                odds_values[14],
-                # 即时终盘换算客胜概率
-                odds_values[15])
-            print odds
-            print(match_euro_odds)
+            # print(oddstr)
+            euro_odds['match_id'] = odds_values[0]
+            euro_odds['match_time'] = odds_values[20]
+            euro_odds['bookie_id'] = odds_values[1]
+            euro_odds['bookie_name_en'] = odds_values[2]
+            euro_odds['bookie_name_cn'] = odds_values[21]
+            euro_odds['open_home_win'] = odds_values[3]
+            euro_odds['open_draw'] = odds_values[4]
+            euro_odds['open_guest_win'] = odds_values[5]
+            euro_odds['end_home_win'] = odds_values[10]
+            euro_odds['end_draw'] = odds_values[11]
+            euro_odds['end_guest_win'] = odds_values[12]
+            euro_odds['open_home_prob'] = odds_values[6]
+            euro_odds['open_draw_prob'] = odds_values[7]
+            euro_odds['open_guest_prob'] = odds_values[8]
+            euro_odds['end_home_win_prob'] = odds_values[13]
+            euro_odds['end_draw_prob'] = odds_values[14]
+            euro_odds['end_guest_win_prob'] = odds_values[15]
+            print euro_odds.__str__().encode(_UTF_8_)
         pass
 
     def cleanup_var_game(self, game):
