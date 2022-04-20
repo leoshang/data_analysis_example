@@ -66,6 +66,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
 
     # start_urls = [amazon_cn_search_result_link + "%s" % n for n in product_ids]
 
+    # TODO FIX the crawling is recursively crawling the link in endless cycle!
     def parse(self, response):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
