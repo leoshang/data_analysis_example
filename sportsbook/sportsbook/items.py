@@ -12,16 +12,8 @@ import scrapy
 #     return "=\"" + weight[1].strip() + "\""
 
 
-class EuroOddsPipelineItem(scrapy.Item):
-    # match_id, match_time,
-    # bookie_id, bookie_name_en, bookie_name_cn,
-    # matchday, season, matchname,
-    # hometeam, guestteam,
-    # hometeam_cn, guestteam_cn,
-    # open_home_win, open_draw, open_guest_win,
-    # end_home_win, end_draw, end_guest_win,
-    # open_home_prob, open_draw_prob, open_guest_prob,
-    # end_home_win_prob, end_draw_prob, end_guest_win_prob
+class EuroOdds(scrapy.Item):
+    # league name
     matchname = scrapy.Field()
     match_id = scrapy.Field()
     season = scrapy.Field()
@@ -52,4 +44,34 @@ class EuroOddsPipelineItem(scrapy.Item):
     end_home_win_prob = scrapy.Field()
     end_draw_prob = scrapy.Field()
     end_guest_win_prob = scrapy.Field()
+
+    def __setitem__(self, key, value):
+        self.__dict__[key] = value
+
+    # in order to make call self.season successful, the following method has to be implemented
+    # otherwise it has to call self['season']
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __str__(self):
+        return "赛季：{}；比赛日：{}" \
+               "比赛: {}; 主队: {}; 客队: {};" \
+               "赔率机构Id：{}；赔率机构名称：{}" \
+               "初赔主胜: {}; 初赔平局: {}; 初赔客胜: {};" \
+               "即时终赔主胜: {}; 即时终赔平局: {}; 即时终赔客胜: {};" \
+               "初赔主胜（换算）概率: {}; " \
+               "初赔平局（换算）概率: {}; " \
+               "初赔客胜（换算）概率: {};" \
+               "终赔主胜（换算）概率: {}; " \
+               "终赔平局（换算）概率: {}; " \
+               "终赔客胜（换算）概率: {}".format(
+                self['season'], self.matchday,
+                self.matchname, self.hometeam_cn, self.guestteam_cn,
+                self.bookie_id, self.bookie_name_cn,
+                self.open_home_win, self.open_draw, self.open_guest_win,
+                self.end_home_win, self.end_draw, self.end_guest_win,
+                self.open_home_prob, self.open_draw_prob, self.open_guest_prob,
+                self.end_home_win_prob, self.end_draw_prob, self.end_guest_win_prob)
+
+
 

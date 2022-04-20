@@ -2,24 +2,15 @@
 from __future__ import division
 import scrapy
 import configparser
-import re
 
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
-from sportsbook.spiders.EuroOdds import EuroOdds
-from sportsbook.spiders.AsiaOdds import AsiaOdds
-from sportsbook.spiders.MatchEuroOdds import MatchEuroOdds
-from sportsbook.spiders.MatchAsiaHandicap import MatchAsiaHandicap
-from sportsbook.items import EuroOddsPipelineItem
 
 # absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
 _SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/premiereleague-2017-2018.ini'
-
 _JS_CHARSET_LOC_ = '" charset'
 _JS_SRC_LOC_ = "src="
 _JS_SUFFIX_ = '.js'
 _JS_DOMAIN_ = 'http://1x2d.win007.com/'
-
-
 _UTF_8_ = "utf-8"
 
 
@@ -60,22 +51,15 @@ class SportsbookJavascriptParser(scrapy.Spider):
 
     ODDS_TABLE_ID = "//table[@id='oddsList_tab']"
     SCRIPT_TAG = "//script[@src]"
-
     ODD_ROW_PATH = "//tr[@align='center']"
-
     ODD_SEASON_ROUND_PATH = "td[0]/text()"
     ODD_SEASON_MATCH_DATE_PATH = "td[1]/text()"
-
     ODD_HOST_NAME_PATH = "td[2]/a/text()"
     ODD_HOST_RANKING_PATH = "td[2]/sup/text()"
-
     ODD_SCORE_PATH = "td[3]//strong/text()"
-
     ODD_GUEST_NAME_PATH = "td[4]/a/text()"
     ODD_GUEST_RANKING_PATH = "td[4]/sup/text()"
-
     ODD_ASIA_HANDICAP_PATH = "td[5]/text()"
-
     ODD_EURO_BET_LINK_PATH = "td[9]//a[1]/text()"
 
     item_count = 0

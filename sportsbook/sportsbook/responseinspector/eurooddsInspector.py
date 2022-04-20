@@ -1,6 +1,6 @@
 import re
 
-from sportsbook.spiders.EuroOdds import EuroOdds
+from sportsbook.items import EuroOdds
 
 _UTF_8_ = "utf-8"
 _JS_VAR_DELIMITER_ = ';'
@@ -24,13 +24,14 @@ class EuroOddsInspector:
         all_odds = response.text.encode(_UTF_8_)
         # print(all_odds)
         # @TODO populate later match_euro_odds into eu_pipeline_item
-
         euro_odds = EuroOdds()
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
         var_list = all_odds_oneline.split(_JS_VAR_DELIMITER_)
         # for each var, filter the desired and populate it to match item
         for v in var_list:
             self.extract(v, euro_odds)
+            if hasattr(euro_odds, 'open_home_win') and euro_odds['open_home_win']:
+                yield euro_odds
 
     def extract(self, js_record, euro_odds):
         js_var = self.cleanup_jsdata(js_record)
@@ -102,8 +103,7 @@ class EuroOddsInspector:
             euro_odds['end_home_win_prob'] = odds_values[13]
             euro_odds['end_draw_prob'] = odds_values[14]
             euro_odds['end_guest_win_prob'] = odds_values[15]
-            print euro_odds.__str__().encode(_UTF_8_)
-            # yield euro_odds
+            print euro_odds
         pass
 
     def cleanup_var_game(self, game):
