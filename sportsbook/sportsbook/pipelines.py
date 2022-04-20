@@ -95,22 +95,35 @@ class SportsbookXslxExportPipeline(object):
 
     def process_item(self, item, spider):
         # print('item[%s] to be processed:' % (item['name']))
-        self.worksheet.write(self.row_count, 0, item['match_id'])
-        self.worksheet.write(self.row_count, 1, item['match_time'])
-        self.worksheet.write(self.row_count, 2, item['bookie_id'])
-        self.worksheet.write(self.row_count, 3, item['bookie_name_en'])
-        self.worksheet.write(self.row_count, 4, item['bookie_name_cn'])
-        self.worksheet.write(self.row_count, 5, item['open_home_win'])
-        self.worksheet.write(self.row_count, 6, item['open_draw'])
-        self.worksheet.write(self.row_count, 7, item['open_guest_win'])
-        self.worksheet.write(self.row_count, 8, item['end_home_win'])
-        self.worksheet.write(self.row_count, 9, item['end_draw'])
-        self.worksheet.write(self.row_count, 10, item['end_guest_win'])
-        self.worksheet.write(self.row_count, 11, item['open_home_prob'])
-        self.worksheet.write(self.row_count, 12, item['open_draw_prob'])
-        self.worksheet.write(self.row_count, 13, item['open_guest_prob'])
-        self.worksheet.write(self.row_count, 14, item['end_home_win_prob'])
-        self.worksheet.write(self.row_count, 15, item['end_draw_prob'])
-        self.worksheet.write(self.row_count, 16, item['end_guest_win_prob'])
+        self.worksheet.write(self.row_count, 0, item['matchname'])
+        self.worksheet.write(self.row_count, 1, item['match_id'])
+        self.worksheet.write(self.row_count, 2, item['season'])
+        self.worksheet.write(self.row_count, 3, item['matchday'])
+        self.worksheet.write(self.row_count, 4, item['match_time'])
+
+        self.worksheet.write(self.row_count, 5, item['hometeam'])
+        self.worksheet.write(self.row_count, 6, item['guestteam'])
+        self.worksheet.write(self.row_count, 7, item['hometeam_cn'])
+        self.worksheet.write(self.row_count, 8, item['guestteam_cn'])
+
+        self.worksheet.write(self.row_count, 9, item['bookie_id'])
+        self.worksheet.write(self.row_count, 10, item['bookie_name_en'])
+        self.worksheet.write(self.row_count, 11, item['bookie_name_cn'])
+
+        self.worksheet.write(self.row_count, 12, item['open_home_win'])
+        self.worksheet.write(self.row_count, 13, item['open_draw'])
+        self.worksheet.write(self.row_count, 14, item['open_guest_win'])
+
+        self.worksheet.write(self.row_count, 15, item['end_home_win'])
+        self.worksheet.write(self.row_count, 16, item['end_draw'])
+        self.worksheet.write(self.row_count, 17, item['end_guest_win'])
+
+        self.worksheet.write(self.row_count, 18, item['open_home_prob'])
+        self.worksheet.write(self.row_count, 19, item['open_draw_prob'])
+        self.worksheet.write(self.row_count, 20, item['open_guest_prob'])
+
+        self.worksheet.write(self.row_count, 21, item['end_home_win_prob'])
+        self.worksheet.write(self.row_count, 22, item['end_draw_prob'])
+        self.worksheet.write(self.row_count, 23, item['end_guest_win_prob'])
         self.row_count += 1
         return item
