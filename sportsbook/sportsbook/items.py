@@ -15,13 +15,18 @@ import scrapy
 class EuroOdds(scrapy.Item):
     # league name
     matchname = scrapy.Field()
+    schedule_id = scrapy.Field()
     match_id = scrapy.Field()
     season = scrapy.Field()
     matchday = scrapy.Field()
     match_time = scrapy.Field()
 
     hometeam = scrapy.Field()
+    hometeam_id = scrapy.Field()
+    hOrder = scrapy.Field()
     guestteam = scrapy.Field()
+    guestteam_id = scrapy.Field()
+    gOrder = scrapy.Field()
     hometeam_cn = scrapy.Field()
     guestteam_cn = scrapy.Field()
 
