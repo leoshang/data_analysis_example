@@ -90,7 +90,3 @@ class SportsbookJavascriptParser(scrapy.Spider):
                     break
             else:
                 break
-            # citem = SportsbookItem()
-            # yield citem
-
-

@@ -3,7 +3,7 @@ import re
 from sportsbook.items import EuroOdds
 
 _UTF_8_ = "utf-8"
-_JS_VAR_DELIMITER_ = ';'
+_JS_VAR_DELIMITER_ = ';var '
 _JS_VAR_MATCH_DAY_ = 'matchday'
 _JS_VAR_MATCH_TIME_ = 'matchtime'
 _JS_VAR_GAME_DETAIL_ = 'gameDetail'
@@ -29,11 +29,11 @@ class EuroOddsInspector:
         var_list = all_odds_oneline.split(_JS_VAR_DELIMITER_)
         # for each var, filter the desired and populate it to match item
         for v in var_list:
-            self.extract(v, euro_odds)
-            if hasattr(euro_odds, 'open_home_win') and euro_odds['open_home_win']:
-                yield euro_odds
+            self.populate(v, euro_odds)
+        if hasattr(euro_odds, 'open_home_win') and euro_odds['open_home_win']:
+            yield euro_odds
 
-    def extract(self, js_record, euro_odds):
+    def populate(self, js_record, euro_odds):
         js_var = self.cleanup_jsdata(js_record)
         # print(js_var)
         var_key_val = js_var.split("=")
@@ -50,22 +50,6 @@ class EuroOddsInspector:
         if var_key_val[0] == _JS_VAR_GAME_DETAIL_:
             self.handle_game_detail(var_key_val[1], euro_odds)
 
-    def cleanup_jsdata(self, js_record):
-        js_var = js_record.encode(_UTF_8_)
-        if _JS_VAR_ in js_var:
-            js_var = js_var[len(_JS_VAR_):]
-        if '="' in js_var:
-            js_var = js_var.replace('="', '=')
-        if js_var.endswith('"'):
-            js_var = js_var[:-1]
-        elif js_var.endswith('";'):
-            js_var = js_var[:-2]
-        if _JS_VAR_SCHEDULE_ in js_var:
-            idx = js_var.index(_JS_VAR_SCHEDULE_)
-            js_var = js_var[:idx]
-        # print(js_var)
-        return js_var
-
     def extract_matchday(self, match_datetime, euro_odds):
         # '2017,08-1,11,18,45,00'
         tm = match_datetime.split(',')
@@ -74,15 +58,15 @@ class EuroOddsInspector:
         euro_odds[_JS_VAR_MATCH_DAY_] = matchday
 
     def extract_all_game_odds(self, game, euro_odds):
-        vendorlist = self.cleanup_var_game(game)
-        # print(vendorlist)
-        # print(len(vendorlist))
-        for item in vendorlist:
-            itemstr = item.encode(_UTF_8_)
-            self.build_euroodds(itemstr, euro_odds)
+        bookies_euro_odds = self.cleanup_var_game(game)
+        # print(all_euro_odds)
+        # print(len(all_euro_odds))
+        for bookie in bookies_euro_odds:
+            bookie_odds = bookie.encode(_UTF_8_)
+            self.build_euro_odds(bookie_odds, euro_odds)
 
-    def build_euroodds(self, oddstr, euro_odds):
-        odds_values = oddstr.split('|')
+    def build_euro_odds(self, bookie_odds, euro_odds):
+        odds_values = bookie_odds.split('|')
         # print(odds_values[2]) # institue_name
         if odds_values[2] in self.institute_list:
             # print(oddstr)
@@ -103,8 +87,25 @@ class EuroOddsInspector:
             euro_odds['end_home_win_prob'] = odds_values[13]
             euro_odds['end_draw_prob'] = odds_values[14]
             euro_odds['end_guest_win_prob'] = odds_values[15]
-            print euro_odds
+            # print euro_odds
+            # yield euro_odds
         pass
+
+    def cleanup_jsdata(self, js_record):
+        js_var = js_record.encode(_UTF_8_)
+        if _JS_VAR_ in js_var:
+            js_var = js_var[len(_JS_VAR_):]
+        if '="' in js_var:
+            js_var = js_var.replace('="', '=')
+        if js_var.endswith('"'):
+            js_var = js_var[:-1]
+        elif js_var.endswith('";'):
+            js_var = js_var[:-2]
+        if _JS_VAR_SCHEDULE_ in js_var:
+            idx = js_var.index(_JS_VAR_SCHEDULE_)
+            js_var = js_var[:idx]
+        # print(js_var)
+        return js_var
 
     def cleanup_var_game(self, game):
         if game.startswith('Array("'):
