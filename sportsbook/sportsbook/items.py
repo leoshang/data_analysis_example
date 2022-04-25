@@ -23,10 +23,10 @@ class EuroOdds(scrapy.Item):
 
     hometeam = scrapy.Field()
     hometeam_id = scrapy.Field()
-    hOrder = scrapy.Field()
+    horder = scrapy.Field()
     guestteam = scrapy.Field()
     guestteam_id = scrapy.Field()
-    gOrder = scrapy.Field()
+    gorder = scrapy.Field()
     hometeam_cn = scrapy.Field()
     guestteam_cn = scrapy.Field()
 
@@ -60,7 +60,8 @@ class EuroOdds(scrapy.Item):
 
     def __str__(self):
         return "赛季：{}；比赛日：{}" \
-               "比赛: {}; 主队: {}; 客队: {};" \
+               "比赛: {}; 主队: {}; 主队排名: {};" \
+               "客队: {}; 客队排名: {};" \
                "赔率机构Id：{}；赔率机构名称：{}" \
                "初赔主胜: {}; 初赔平局: {}; 初赔客胜: {};" \
                "即时终赔主胜: {}; 即时终赔平局: {}; 即时终赔客胜: {};" \
@@ -71,7 +72,8 @@ class EuroOdds(scrapy.Item):
                "终赔平局（换算）概率: {}; " \
                "终赔客胜（换算）概率: {}".format(
                 self['season'], self.matchday,
-                self.matchname, self.hometeam_cn, self.guestteam_cn,
+                self.matchname, self.hometeam_cn, self.horder,
+                self.guestteam_cn, self.gorder,
                 self.bookie_id, self.bookie_name_cn,
                 self.open_home_win, self.open_draw, self.open_guest_win,
                 self.end_home_win, self.end_draw, self.end_guest_win,

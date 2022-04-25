@@ -33,6 +33,8 @@ class EuroOddsInspector:
             self.populate(v, fixture_fields, odds_array)
         print 'size: ' + str(len(odds_array))
         for x in odds_array:
+            # copy fixture_fields into  x
+            x.update(fixture_fields)
             yield x
 
     def populate(self, js_record, fixture_fields, odds_array):
