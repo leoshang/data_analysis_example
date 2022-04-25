@@ -1,0 +1,8 @@
+spidermw.py
+def process_spider_output(result):
+            for method in self.methods['process_spider_output']:
+			self.methods['process_spider_output']
+			0 = method DepthMiddleware.process_spider_output of <scrapy.spidermiddlewares.depth.DepthMiddleware
+			1 = method UrlLengthMiddleware.process_spider_output of <scrapy.spidermiddlewares.urllength.UrlLengthMiddleware
+			2 = method OffsiteMiddleware.process_spider_output of <scrapy.spidermiddlewares.offsite.OffsiteMiddleware
+			3 = method RefererMiddleware.process_spider_output of <scrapy.spidermiddlewares.referer.RefererMiddleware
