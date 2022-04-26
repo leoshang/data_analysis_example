@@ -81,4 +81,5 @@ class EuroOdds(scrapy.Item):
                 self.end_home_win_prob, self.end_draw_prob, self.end_guest_win_prob)
 
 
-
+class AsianOdds(scrapy.Item):
+    pass

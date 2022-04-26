@@ -3,6 +3,7 @@ from __future__ import division
 import scrapy
 import configparser
 
+from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 
 # absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
@@ -44,29 +45,26 @@ class SportsbookJavascriptParser(scrapy.Spider):
         self.start_urls = []
         self.odds_team_title = ''
         self.start_urls.append(start_url)
-        self.response_inspector = EuroOddsInspector()
+        self.euroodds_inspector = EuroOddsInspector()
+        self.asianodds_inspector = AsianOddsInspector()
         print(self.start_urls)
 
-    # ODDS_TEAM_TITLE_PATH = "//div[@id='TitleLeft']"
-
-    ODDS_TABLE_ID = "//table[@id='oddsList_tab']"
     SCRIPT_TAG = "//script[@src]"
-    ODD_ROW_PATH = "//tr[@align='center']"
-    ODD_SEASON_ROUND_PATH = "td[0]/text()"
-    ODD_SEASON_MATCH_DATE_PATH = "td[1]/text()"
-    ODD_HOST_NAME_PATH = "td[2]/a/text()"
-    ODD_HOST_RANKING_PATH = "td[2]/sup/text()"
-    ODD_SCORE_PATH = "td[3]//strong/text()"
-    ODD_GUEST_NAME_PATH = "td[4]/a/text()"
-    ODD_GUEST_RANKING_PATH = "td[4]/sup/text()"
-    ODD_ASIA_HANDICAP_PATH = "td[5]/text()"
-    ODD_EURO_BET_LINK_PATH = "td[9]//a[1]/text()"
+
+    # 比分
+    # <div class="row" id="headVs">
+    #     <div class="end">
+    #         <div class="score">4</div>
+    #         <div>
+    #             <span class="row red b"> 完 </span>
+    #             <span class="row"> (2-2) </span>
+    #         </div>
+    #         <div class="score"> 3 </div>
+    #     </div>
+    # </div>
 
     item_count = 0
 
-    # start_urls = [amazon_cn_search_result_link + "%s" % n for n in product_ids]
-
-    # TODO FIX the crawling is recursively crawling the link in endless cycle!
     def parse(self, response):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
@@ -85,8 +83,10 @@ class SportsbookJavascriptParser(scrapy.Spider):
                 print(script_link)
                 if script_link.startswith(_JS_DOMAIN_) and _JS_SUFFIX_ in script_link:
                     print('target javascript site found')
-                    request = scrapy.Request(script_link, callback=self.response_inspector.extract_euro_odds)
-                    yield request
+                    request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds)
+                    yield request_euroodds
+                    request_asianodds = scrapy.Request("http://vip.win007.com/AsianOdds_n.aspx?id=1394661&l=0", callback=self.asianodds_inspector.extract_asian_odds)
+                    yield request_asianodds
                     break
             else:
                 break

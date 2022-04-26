@@ -11,6 +11,7 @@ _JS_VAR_GAME_ = 'game'
 _JS_VAR_ = 'var '
 _JS_VAR_SCHEDULE_ = 'ScheduleID'
 
+
 # EuroOdds returned in format of key=value from a javascript file
 class EuroOddsInspector:
     def __init__(self):
@@ -22,7 +23,6 @@ class EuroOddsInspector:
     def extract_euro_odds(self, response):
         all_odds = response.text.encode(_UTF_8_)
         # print(all_odds)
-        # @TODO populate later match_euro_odds into eu_pipeline_item
 
         odds_array = []
         fixture_fields = {}
