@@ -1,6 +1,15 @@
-# Vote of Sofascore starts from Season 2012/13
-英超 https://api.sofascore.com/api/v1/unique-tournament/17/
-英冠 https://api.sofascore.com/api/v1/unique-tournament/18/
+＃ https://www.sofascore.com/tournament/football/england/premier-league/17 有Dropdown可选择Season，
+＃ season 有 自己的Id，例如选择了17/18赛季，其对应的Id就是 13380
+＃ 选择了赛季后，页面会显示这个赛季的每一轮次的所有比赛。每场比赛都有自己的uniqueId 及 URL
+＃ 例如 https://api.sofascore.com/api/v1/event/7438023
+
+＃ https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/team-events/total
+＃ team_events_total.README 里可以发现所有本赛季13380的比赛的Id
+
+# Sofascore的球迷Vote的数据从Season 2012/13才开始有。
+
+英超＝https://api.sofascore.com/api/v1/unique-tournament/17/
+英冠＝https://api.sofascore.com/api/v1/unique-tournament/18/
 
 [leagues]
 premier-leagues = https://api.sofascore.com/api/v1/unique-tournament/17/
@@ -25,38 +34,24 @@ teams_profile = https://api.sofascore.com/api/v1/unique-tournament/17/season/$<s
 # 是我们需要的球迷对比赛的支持度
 votes_of_match = https://api.sofascore.com/api/v1/event/7438023/votes
 
+＃每个赛季的数据
 https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/rounds
 https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/total
 https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/home
 https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/away
-https://api.sofascore.com/api/v1/event/newly-added-events
+
+＃关注力度打的比赛
 https://api.sofascore.com/api/v1/unique-tournament/17/featured-events
-# 9576293 can be found in featured-events
-https://api.sofascore.com/api/v1/event/9576293/votes
-
-https://www.sofascore.com/tournament/football/england/premier-league/17 有Dropdown可选择Season，
-season 有 自己的Id，例如选择了17/18赛季，其对应的Id就是 13380
-选择了赛季后，页面会显示这个赛季的每一轮次的所有比赛。每场比赛都有自己的uniqueId 及 URL 例如 https://api.sofascore.com/api/v1/event/7438023
-
-问题是如何在https://www.sofascore.com/tournament/football/england/premier-league/17 里找到整个赛季的每场比赛的id！！！
-按理知道了seasonId，可以通过
-https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/events
-来获得所有比赛的Id， 但得到了404
-
-https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/team-events/total
-team_events_total.README 里可以发现所有本赛季13380的比赛的Id
 
 https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/standings/total
 这里可以找到本赛季每支队伍的静态数据，最重要的就是它的球迷数量，这不是vote的球迷数，但两者肯定有关系
 
 https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/rounds 却可以得到所有轮次，见rounds.README
 
-#event 就是比赛 7438023 就是比赛的id
+# event就是比赛， 7438023 就是比赛的id
 https://api.sofascore.com/api/v1/event/7438023
 Crystal Palace - West Bromwich Albion
 对应的URL就是 <a data-id="7438023" href="/west-bromwich-albion-crystal-palace/hi">
 
-Crystal Palace id：7
-West Bromwich Albion id: 8
 
 
