@@ -1,0 +1,21 @@
+https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/rounds
+{
+   "currentRound":{
+      "round":38
+   },
+   "rounds":[
+      {
+         "round":1
+      },
+      {
+         "round":2
+      },
+      {
+         "round":3
+      },
+      。。。
+      {
+         "round":38
+      }
+   ]
+}

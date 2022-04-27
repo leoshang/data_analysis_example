@@ -8,6 +8,8 @@ from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 
 # absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
+from sportsbook.responseinspector.sofascore_inspector import SofaScoreInspector
+
 _SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/premiereleague-2017-2018.ini'
 _JS_CHARSET_LOC_ = '" charset'
 _JS_SRC_LOC_ = "src="
@@ -48,6 +50,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
         self.start_urls.append(start_url)
         self.euroodds_inspector = EuroOddsInspector()
         self.asianodds_inspector = AsianOddsInspector()
+        self.sofascore_inspector = SofaScoreInspector()
         print(self.start_urls)
 
     SCRIPT_TAG = "//script[@src]"
@@ -89,6 +92,13 @@ class SportsbookJavascriptParser(scrapy.Spider):
                     request_asianodds = scrapy.Request("http://vip.win007.com/AsianOdds_n.aspx?id=1394661&l=0",
                                                        callback=self.asianodds_inspector.extract_asian_odds)
                     yield request_asianodds
+
+                    request_sofa = scrapy.Request("https://www.sofascore.com/football/2017-08-11",
+                                                  callback=self.sofascore_inspector.extract_score)
+                    # https://www.sofascore.com/tournament/football/england/premier-league/17 英超
+
+                    # https://www.sofascore.com/arsenal-leicester-city/GR
+                    yield request_sofa
                     break
             else:
                 break
