@@ -14,10 +14,12 @@ _JS_VAR_SCHEDULE_ = 'ScheduleID'
 
 # EuroOdds returned in format of key=value from a javascript file
 class EuroOddsInspector:
+
     def __init__(self):
         self.match_fields = ['matchname', 'hometeam', 'hometeamid', 'guestteam', 'guestteamid',
                         'hometeam_cn', 'guestteam_cn', 'season', 'horder', 'gorder']
         self.institute_list = ['Ladbrokes', 'Oddset', 'William Hill']
+        EuroOddsInspector.euro_odds = None
         pass
 
     def extract_euro_odds(self, response):
@@ -35,7 +37,8 @@ class EuroOddsInspector:
         for x in odds_array:
             # copy fixture_fields into  x
             x.update(fixture_fields)
-            yield x
+            # yield x
+        EuroOddsInspector.euro_odds = odds_array
 
     def populate(self, js_record, fixture_fields, odds_array):
         js_var = self.cleanup_jsdata(js_record)

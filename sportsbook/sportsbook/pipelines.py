@@ -90,6 +90,13 @@ class SportsbookXslxExportPipeline(object):
         self.worksheet.write(self.row_count, 23, '即时终盘主胜概率'.encode('utf-8'))
         self.worksheet.write(self.row_count, 24, '即时终盘平局概率'.encode('utf-8'))
         self.worksheet.write(self.row_count, 25, '即时终盘客胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 26, '亚盘公司'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 27, '初盘主队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 28, '初盘盘口'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 29, '初盘客队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 30, '即时主队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 31, '即时盘口'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 32, '即时客队水位'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -129,5 +136,13 @@ class SportsbookXslxExportPipeline(object):
         self.worksheet.write(self.row_count, 23, item['end_home_win_prob'])
         self.worksheet.write(self.row_count, 24, item['end_draw_prob'])
         self.worksheet.write(self.row_count, 25, item['end_guest_win_prob'])
+
+        self.worksheet.write(self.row_count, 26, item['asian_bookie'])
+        self.worksheet.write(self.row_count, 27, item['asian_start_homewager'])
+        self.worksheet.write(self.row_count, 28, item['asian_start_handicap'])
+        self.worksheet.write(self.row_count, 29, item['asian_start_guestwager'])
+        self.worksheet.write(self.row_count, 30, item['asian_end_homewager'])
+        self.worksheet.write(self.row_count, 31, item['asian_end_handicap'])
+        self.worksheet.write(self.row_count, 32, item['asian_end_guestwager'])
         self.row_count += 1
         return item

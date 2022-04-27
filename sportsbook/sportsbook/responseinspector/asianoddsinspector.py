@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
+
 _UTF_8_ = "utf-8"
 
 # div id="webmain"
@@ -27,6 +29,14 @@ class AsianOddsInspector:
         self.END_HOME_WAGER_PATH = self.TARGET_SECTION_PATH + "/td[9]/text()"
         self.END_HANDICAP_PATH = self.TARGET_SECTION_PATH + "/td[10]/text()"
         self.END_GUEST_WAGER_PATH = self.TARGET_SECTION_PATH + "/td[11]/text()"
+        self.asian_odds_fields = {self.ODDS_BOOKIE_PATH: "asian_bookie",
+                                  self.START_HOME_WAGER_PATH: "asian_start_homewager",
+                                  self.START_HANDICAP_PATH: "asian_start_handicap",
+                                  self.START_GUEST_WAGER_PATH: "asian_start_guestwager",
+                                  self.END_HOME_WAGER_PATH: "asian_end_homewager",
+                                  self.END_HANDICAP_PATH: "asian_end_handicap",
+                                  self.END_GUEST_WAGER_PATH: "asian_end_guestwager"}
+
         self.target_html_nodes = [self.ODDS_BOOKIE_PATH,
                                   self.START_HOME_WAGER_PATH, self.START_HANDICAP_PATH, self.START_GUEST_WAGER_PATH,
                                   self.END_HOME_WAGER_PATH, self.END_HANDICAP_PATH, self.END_GUEST_WAGER_PATH]
@@ -34,7 +44,14 @@ class AsianOddsInspector:
 
     def extract_asian_odds(self, response):
         # all_odds = response.text.encode(_UTF_8_)
+        asian_odds = {}
         for node in self.target_html_nodes:
             node_value = response.xpath(node).get().encode(_UTF_8_)
-            print node_value
+            asian_odds[self.asian_odds_fields[node]] = node_value
+        # print asian_odds
+        for x in EuroOddsInspector.euro_odds:
+            # copy asian_odds into  x
+            x.update(asian_odds)
+            yield x
+        # print EuroOddsInspector.euro_odds
     pass

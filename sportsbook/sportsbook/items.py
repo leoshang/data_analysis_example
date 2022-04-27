@@ -50,6 +50,14 @@ class EuroOdds(scrapy.Item):
     end_draw_prob = scrapy.Field()
     end_guest_win_prob = scrapy.Field()
 
+    asian_bookie = scrapy.Field()
+    asian_start_homewager = scrapy.Field()
+    asian_start_handicap = scrapy.Field()
+    asian_start_guestwager = scrapy.Field()
+    asian_end_homewager = scrapy.Field()
+    asian_end_handicap = scrapy.Field()
+    asian_end_guestwager = scrapy.Field()
+
     def __setitem__(self, key, value):
         self.__dict__[key] = value
 
@@ -70,7 +78,7 @@ class EuroOdds(scrapy.Item):
                "初赔客胜（换算）概率: {};" \
                "终赔主胜（换算）概率: {}; " \
                "终赔平局（换算）概率: {}; " \
-               "终赔客胜（换算）概率: {}".format(
+               "终赔客胜（换算）概率: {}; ".format(
                 self['season'], self.matchday,
                 self.matchname, self.hometeam_cn, self.horder,
                 self.guestteam_cn, self.gorder,
@@ -80,6 +88,3 @@ class EuroOdds(scrapy.Item):
                 self.open_home_prob, self.open_draw_prob, self.open_guest_prob,
                 self.end_home_win_prob, self.end_draw_prob, self.end_guest_win_prob)
 
-
-class AsianOdds(scrapy.Item):
-    pass

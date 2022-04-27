@@ -3,6 +3,7 @@ from __future__ import division
 import scrapy
 import configparser
 
+from sportsbook.items import EuroOdds
 from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 
@@ -85,7 +86,8 @@ class SportsbookJavascriptParser(scrapy.Spider):
                     print('target javascript site found')
                     request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds)
                     yield request_euroodds
-                    request_asianodds = scrapy.Request("http://vip.win007.com/AsianOdds_n.aspx?id=1394661&l=0", callback=self.asianodds_inspector.extract_asian_odds)
+                    request_asianodds = scrapy.Request("http://vip.win007.com/AsianOdds_n.aspx?id=1394661&l=0",
+                                                       callback=self.asianodds_inspector.extract_asian_odds)
                     yield request_asianodds
                     break
             else:
