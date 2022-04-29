@@ -33,7 +33,7 @@ class EuroOddsInspector:
         # for each var, filter the desired and populate it to match item
         for v in var_list:
             self.populate(v, fixture_fields, odds_array)
-        print 'size: ' + str(len(odds_array))
+        print 'bookie total: ' + str(len(odds_array))
         for x in odds_array:
             # copy fixture_fields into  x
             x.update(fixture_fields)

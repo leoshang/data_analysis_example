@@ -44,13 +44,15 @@ class SportsbookJavascriptParser(scrapy.Spider):
     def __init__(self, *a, **kw):
         # print(SportsbookJavascriptParser.data_feed_config.sections())
         super(SportsbookJavascriptParser, self).__init__(*a, **kw)
+        self.start_urls = []
         start_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['season_round_url']
         season_list = SportsbookJavascriptParser.config_section_map('PremierLeague')['all_season']
         round_total = SportsbookJavascriptParser.config_section_map('PremierLeague')['round_total']
-        self.build_match_url(start_url, season_list, round_total)
-        self.start_urls = []
+        self.euro_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['euro_odds_site']
+        self.asian_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['asian_odds_site']
+
+        self.append_match_url(start_url, season_list, round_total)
         self.odds_team_title = ''
-        self.start_urls.append(start_url)
         self.euroodds_inspector = EuroOddsInspector()
         self.asianodds_inspector = AsianOddsInspector()
         self.sofascore_inspector = SofaScoreInspector()
@@ -59,17 +61,35 @@ class SportsbookJavascriptParser(scrapy.Spider):
     SCRIPT_TAG = "//script[@src]"
     item_count = 0
 
-    def build_match_url(self, start_url, season_list, round_total):
+    def append_match_url(self, start_url, season_list, round_total):
         season_array = str(season_list).split(",")
         for season in season_array:
             for r in range(int(str(round_total))):
                 match_url = str(start_url).replace('$1', season).replace('$2', str(r+1))
-                print "match: " + match_url
+                self.start_urls.append(match_url)
+                # print "match: " + match_url
 
     def parse(self, response):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
+
+        match_bloc = response.body.encode(_UTF_8_)
+        match_array = match_bloc.split(";")
+        # print len(match_array)
+        for m in match_array:
+            matchid = self.extract_matchid(m)
+            if not matchid:
+                # print str(m) + "match has no id"
+                continue
+            e_odds_url = self.euro_odds_url.replace("$matchId", str(matchid)).encode("UTF-8")
+            a_odds_url = self.asian_odds_url.replace("$matchId", matchid).encode("UTF-8")
+            request_euroodds = scrapy.Request(e_odds_url, callback=self.parse_odds,
+                                              meta={'asian_odds_link': a_odds_url})
+            yield request_euroodds
+
+    def parse_odds(self, response):
         odds_rows = response.xpath(self.SCRIPT_TAG)
+        asian_odds_url = response.meta.get('asian_odds_link')
         for index, odd_row in enumerate(odds_rows):
             script_tag = odd_row.extract().encode(_UTF_8_)
             print(script_tag)
@@ -77,25 +97,34 @@ class SportsbookJavascriptParser(scrapy.Spider):
             if _JS_CHARSET_LOC_ not in script_tag or _JS_SRC_LOC_ not in script_tag:
                 continue
             idx_end = script_tag.index(_JS_CHARSET_LOC_)
-            print(idx_begin)
-            print(idx_end)
+            # print(idx_begin)
+            # print(idx_end)
             if idx_begin > 0 and idx_end > 0:
                 script_link = script_tag[idx_begin + 5:idx_end]
-                print(script_link)
                 if script_link.startswith(_JS_DOMAIN_) and _JS_SUFFIX_ in script_link:
-                    print('target javascript site found')
+                    print 'target javascript site found' + script_link
                     request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds)
                     yield request_euroodds
-                    request_asianodds = scrapy.Request("http://vip.win007.com/AsianOdds_n.aspx?id=1394661&l=0",
+                    request_asianodds = scrapy.Request(asian_odds_url,
                                                        callback=self.asianodds_inspector.extract_asian_odds)
                     yield request_asianodds
 
                     request_sofa = scrapy.Request("https://www.sofascore.com/football/2017-08-11",
                                                   callback=self.sofascore_inspector.extract_score)
-                    # https://www.sofascore.com/tournament/football/england/premier-league/17 英超
-
-                    # https://www.sofascore.com/arsenal-leicester-city/GR
-                    yield request_sofa
+                    # yield request_sofa
                     break
             else:
                 break
+
+    def extract_matchid(self, m):
+        if not m or len(m) < 1 or ("=" not in m):
+            return None
+        m_array = m.split("=")
+        # print m_array[0]
+        tmp = m_array[0].replace("\"]", "")
+        # print tmp
+        id_array = tmp.split("_")
+        if id_array and len(id_array) > 1:
+            return id_array[1]
+        else:
+            return None
