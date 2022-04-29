@@ -1,6 +1,7 @@
 import re
 
 from sportsbook.items import EuroOdds
+from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
 
 _UTF_8_ = "utf-8"
 _JS_VAR_DELIMITER_ = ';var '
@@ -19,13 +20,14 @@ class EuroOddsInspector:
         self.match_fields = ['matchname', 'hometeam', 'hometeamid', 'guestteam', 'guestteamid',
                         'hometeam_cn', 'guestteam_cn', 'season', 'horder', 'gorder']
         self.institute_list = ['Ladbrokes', 'Oddset', 'William Hill']
-        EuroOddsInspector.euro_odds = None
+        self.asianodds_inspector = AsianOddsInspector()
         pass
 
     def extract_euro_odds(self, response):
         all_odds = response.text.encode(_UTF_8_)
         # print(all_odds)
-
+        scrapy_instance = response.meta.get("scrapy_instance")
+        asian_odds_link = response.meta.get("asian_odds_link")
         odds_array = []
         fixture_fields = {}
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
@@ -38,7 +40,10 @@ class EuroOddsInspector:
             # copy fixture_fields into  x
             x.update(fixture_fields)
             # yield x
-        EuroOddsInspector.euro_odds = odds_array
+        request_asianodds = scrapy_instance.Request(asian_odds_link,
+                                                    callback=self.asianodds_inspector.extract_asian_odds,
+                                                    meta={'euro_odds_array': odds_array})
+        yield request_asianodds
 
     def populate(self, js_record, fixture_fields, odds_array):
         js_var = self.cleanup_jsdata(js_record)

@@ -4,7 +4,7 @@ import scrapy
 import configparser
 
 from sportsbook.items import EuroOdds
-from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
+
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 
 # absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
@@ -54,7 +54,6 @@ class SportsbookJavascriptParser(scrapy.Spider):
         self.append_match_url(start_url, season_list, round_total)
         self.odds_team_title = ''
         self.euroodds_inspector = EuroOddsInspector()
-        self.asianodds_inspector = AsianOddsInspector()
         self.sofascore_inspector = SofaScoreInspector()
         print(self.start_urls)
 
@@ -103,11 +102,10 @@ class SportsbookJavascriptParser(scrapy.Spider):
                 script_link = script_tag[idx_begin + 5:idx_end]
                 if script_link.startswith(_JS_DOMAIN_) and _JS_SUFFIX_ in script_link:
                     print 'target javascript site found' + script_link
-                    request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds)
+                    request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds,
+                                                      meta={'scrapy_instance': scrapy,
+                                                            'asian_odds_link': asian_odds_url})
                     yield request_euroodds
-                    request_asianodds = scrapy.Request(asian_odds_url,
-                                                       callback=self.asianodds_inspector.extract_asian_odds)
-                    yield request_asianodds
 
                     request_sofa = scrapy.Request("https://www.sofascore.com/football/2017-08-11",
                                                   callback=self.sofascore_inspector.extract_score)

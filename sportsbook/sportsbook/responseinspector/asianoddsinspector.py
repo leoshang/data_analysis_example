@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 
 _UTF_8_ = "utf-8"
 
@@ -49,9 +48,9 @@ class AsianOddsInspector:
             node_value = response.xpath(node).get().encode(_UTF_8_)
             asian_odds[self.asian_odds_fields[node]] = node_value
         # print asian_odds
-        for x in EuroOddsInspector.euro_odds:
+        euro_odds_array = response.meta.get("euro_odds_array")
+        for x in euro_odds_array:
             # copy asian_odds into  x
             x.update(asian_odds)
             yield x
-        # print EuroOddsInspector.euro_odds
     pass

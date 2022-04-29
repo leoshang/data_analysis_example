@@ -25,7 +25,7 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 50
+CONCURRENT_REQUESTS = 1
 CONCURRENT_ITEMS = 50
 
 DEFAULT_REQUEST_HEADERS = {
