@@ -44,7 +44,10 @@ class SportsbookJavascriptParser(scrapy.Spider):
     def __init__(self, *a, **kw):
         # print(SportsbookJavascriptParser.data_feed_config.sections())
         super(SportsbookJavascriptParser, self).__init__(*a, **kw)
-        start_url = SportsbookJavascriptParser.config_section_map('General')['start_urls']
+        start_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['season_round_url']
+        season_list = SportsbookJavascriptParser.config_section_map('PremierLeague')['all_season']
+        round_total = SportsbookJavascriptParser.config_section_map('PremierLeague')['round_total']
+        self.build_match_url(start_url, season_list, round_total)
         self.start_urls = []
         self.odds_team_title = ''
         self.start_urls.append(start_url)
@@ -54,20 +57,14 @@ class SportsbookJavascriptParser(scrapy.Spider):
         print(self.start_urls)
 
     SCRIPT_TAG = "//script[@src]"
-
-    # 比分
-    # <div class="row" id="headVs">
-    #     <div class="end">
-    #         <div class="score">4</div>
-    #         <div>
-    #             <span class="row red b"> 完 </span>
-    #             <span class="row"> (2-2) </span>
-    #         </div>
-    #         <div class="score"> 3 </div>
-    #     </div>
-    # </div>
-
     item_count = 0
+
+    def build_match_url(self, start_url, season_list, round_total):
+        season_array = str(season_list).split(",")
+        for season in season_array:
+            for r in range(int(str(round_total))):
+                match_url = str(start_url).replace('$1', season).replace('$2', str(r+1))
+                print "match: " + match_url
 
     def parse(self, response):
         # print response.request.headers['User-Agent']
