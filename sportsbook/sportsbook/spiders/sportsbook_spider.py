@@ -7,7 +7,7 @@ from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 # absolute path:= /Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/
 from sportsbook.responseinspector.sofascore_inspector import SofaScoreInspector
 
-_SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/premiereleague-2017-2018.ini'
+_SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/sportsbook/spiders/premier-league.ini'
 _JS_CHARSET_LOC_ = '" charset'
 _JS_SRC_LOC_ = "src="
 _JS_SUFFIX_ = '.js'
