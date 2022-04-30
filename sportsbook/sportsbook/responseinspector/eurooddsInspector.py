@@ -29,6 +29,7 @@ class EuroOddsInspector:
         # print(all_odds)
         scrapy_instance = response.meta.get("scrapy_instance")
         asian_odds_link = response.meta.get("asian_odds_link")
+        analysis_link = response.meta.get("analysis_link")
         current_season = response.meta.get("current_season")
         odds_array = []
         fixture_fields = {}
@@ -58,7 +59,9 @@ class EuroOddsInspector:
             # yield x
         request_asianodds = scrapy_instance.Request(asian_odds_link,
                                                     callback=self.asianodds_inspector.extract_asian_odds,
-                                                    meta={'euro_odds_array': odds_array})
+                                                    meta={'euro_odds_array': odds_array,
+                                                          'analysis_link': analysis_link,
+                                                          'scrapy_instance': scrapy_instance})
         yield request_asianodds
 
     def populate(self, js_record, fixture_fields, odds_array):

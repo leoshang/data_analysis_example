@@ -47,6 +47,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
         round_total = SportsbookJavascriptParser.config_section_map('PremierLeague')['round_total']
         self.euro_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['euro_odds_site']
         self.asian_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['asian_odds_site']
+        self.analysis_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['analysis_site']
 
         self.append_match_url(start_url, season_list, round_total)
         self.odds_team_title = ''
@@ -80,13 +81,17 @@ class SportsbookJavascriptParser(scrapy.Spider):
             current_season = response.url[response.url.index("matchSeason") + 12: response.url.index("matchSeason") + 21]
             e_odds_url = self.euro_odds_url.replace("$matchId", str(matchid)).encode("UTF-8")
             a_odds_url = self.asian_odds_url.replace("$matchId", matchid).encode("UTF-8")
+            analysis_url = self.analysis_url.replace("$matchId", matchid).encode("UTF-8")
             request_euroodds = scrapy.Request(e_odds_url, callback=self.parse_odds,
-                                              meta={'asian_odds_link': a_odds_url, 'current_season': current_season})
+                                              meta={'asian_odds_link': a_odds_url,
+                                                    'analysis_link': analysis_url,
+                                                    'current_season': current_season})
             yield request_euroodds
 
     def parse_odds(self, response):
         odds_rows = response.xpath(self.SCRIPT_TAG)
         asian_odds_url = response.meta.get('asian_odds_link')
+        analysis_url = response.meta.get('analysis_link')
         current_season = response.meta.get('current_season')
         for index, odd_row in enumerate(odds_rows):
             script_tag = odd_row.extract().encode(_UTF_8_)
@@ -104,6 +109,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
                     request_euroodds = scrapy.Request(script_link, callback=self.euroodds_inspector.extract_euro_odds,
                                                       meta={'scrapy_instance': scrapy,
                                                             'asian_odds_link': asian_odds_url,
+                                                            'analysis_link': analysis_url,
                                                             'current_season': current_season})
                     yield request_euroodds
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sportsbook.responseinspector.analysisinspector import AnalysisInspector
 
 _UTF_8_ = "utf-8"
 
@@ -39,6 +40,7 @@ class AsianOddsInspector:
         self.target_html_nodes = [self.ODDS_BOOKIE_PATH,
                                   self.START_HOME_WAGER_PATH, self.START_HANDICAP_PATH, self.START_GUEST_WAGER_PATH,
                                   self.END_HOME_WAGER_PATH, self.END_HANDICAP_PATH, self.END_GUEST_WAGER_PATH]
+        self.analysis_inspector = AnalysisInspector()
         pass
 
     def extract_asian_odds(self, response):
@@ -48,9 +50,15 @@ class AsianOddsInspector:
             node_value = response.xpath(node).get().encode(_UTF_8_)
             asian_odds[self.asian_odds_fields[node]] = node_value
         # print asian_odds
-        euro_odds_array = response.meta.get("euro_odds_array")
-        for x in euro_odds_array:
-            # copy asian_odds into  x
+        odds_array = response.meta.get("euro_odds_array")
+        analysis_link = response.meta.get("analysis_link")
+        scrapy_instance = response.meta.get("scrapy_instance")
+        for x in odds_array:
+            # append asian_odds into euro_odds
             x.update(asian_odds)
-            yield x
+
+        request_analysis = scrapy_instance.Request(analysis_link,
+                                                   callback=self.analysis_inspector.extract,
+                                                   meta={'odds_array': odds_array})
+        yield request_analysis
     pass
