@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 
 from sportsbook.items import EuroOdds
@@ -28,16 +29,31 @@ class EuroOddsInspector:
         # print(all_odds)
         scrapy_instance = response.meta.get("scrapy_instance")
         asian_odds_link = response.meta.get("asian_odds_link")
+        current_season = response.meta.get("current_season")
         odds_array = []
         fixture_fields = {}
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
-        var_list = all_odds_oneline.split(_JS_VAR_DELIMITER_)
+        # 老的Season的javascript返回的数据不含有关键次Var，分隔符是";"
+        if int(current_season.split('-')[0]) < 2013:
+            var_list = all_odds_oneline.split(";")
+        else:
+            var_list = all_odds_oneline.split(_JS_VAR_DELIMITER_)
+
         # for each var, filter the desired and populate it to match item
         for v in var_list:
             self.populate(v, fixture_fields, odds_array)
         print 'bookie total: ' + str(len(odds_array))
         for x in odds_array:
             # copy fixture_fields into  x
+            if not hasattr(x, 'season'):
+                x['season'] = current_season
+            if not hasattr(x, 'matchday'):
+                # 2012,08-1,19,12,30,00
+                x['matchday'] = x['match_time'][0: x['match_time'].index('-')+2]
+            if not hasattr(x, 'horder'):
+                x['horder'] = '-1'
+            if not hasattr(x, 'gorder'):
+                x['gorder'] = '-1'
             x.update(fixture_fields)
             # yield x
         request_asianodds = scrapy_instance.Request(asian_odds_link,
