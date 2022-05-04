@@ -51,10 +51,6 @@ class EuroOddsInspector:
             if not hasattr(x, 'matchday'):
                 # 2012,08-1,19,12,30,00
                 x['matchday'] = x['match_time'][0: x['match_time'].index('-')+2]
-            if not hasattr(x, 'horder'):
-                x['horder'] = '-1'
-            if not hasattr(x, 'gorder'):
-                x['gorder'] = '-1'
             x.update(fixture_fields)
             # yield x
         request_asianodds = scrapy_instance.Request(asian_odds_link,

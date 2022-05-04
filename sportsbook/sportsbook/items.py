@@ -22,13 +22,24 @@ class EuroOdds(scrapy.Item):
     match_time = scrapy.Field()
 
     hometeam = scrapy.Field()
-    hometeam_id = scrapy.Field()
-    horder = scrapy.Field()
-    guestteam = scrapy.Field()
-    guestteam_id = scrapy.Field()
-    gorder = scrapy.Field()
     hometeam_cn = scrapy.Field()
+    hometeam_id = scrapy.Field()
+    home_points = scrapy.Field()
+    home_ranking = scrapy.Field()
+    home_win_ratio = scrapy.Field()
+    home_win_of_last_6match = scrapy.Field()
+    home_draw_of_last_6match = scrapy.Field()
+    home_lost_of_last_6match = scrapy.Field()
+
+    guestteam = scrapy.Field()
     guestteam_cn = scrapy.Field()
+    guestteam_id = scrapy.Field()
+    guest_points = scrapy.Field()
+    guest_ranking = scrapy.Field()
+    guest_win_ratio = scrapy.Field()
+    guest_win_of_last_6match =  scrapy.Field()
+    guest_draw_of_last_6match = scrapy.Field()
+    guest_lost_of_last_6match = scrapy.Field()
 
     bookie_id = scrapy.Field()
     bookie_name_en = scrapy.Field()
@@ -80,8 +91,8 @@ class EuroOdds(scrapy.Item):
                "终赔平局（换算）概率: {}; " \
                "终赔客胜（换算）概率: {}; ".format(
                 self['season'], self.matchday,
-                self.matchname, self.hometeam_cn, self.horder,
-                self.guestteam_cn, self.gorder,
+                self.matchname, self.hometeam_cn, self.home_ranking,
+                self.guestteam_cn, self.guest_ranking,
                 self.bookie_id, self.bookie_name_cn,
                 self.open_home_win, self.open_draw, self.open_guest_win,
                 self.end_home_win, self.end_draw, self.end_guest_win,
