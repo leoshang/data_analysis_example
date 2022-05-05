@@ -74,7 +74,7 @@ class AnalysisInspector:
         target_html_nodes = self.init_xpath(season)
         analysis = {}
         for node in target_html_nodes:
-            print node
+            # print node
             node_element = response.xpath(node).get()
             if node_element:
                 node_value = node_element.encode(_UTF_8_)
@@ -84,5 +84,5 @@ class AnalysisInspector:
         for x in odds_array:
             # append asian_odds into euro_odds
             x.update(analysis)
-            print x
+            yield x
         pass

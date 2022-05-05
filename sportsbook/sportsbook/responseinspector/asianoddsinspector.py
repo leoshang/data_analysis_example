@@ -47,8 +47,10 @@ class AsianOddsInspector:
         # all_odds = response.text.encode(_UTF_8_)
         asian_odds = {}
         for node in self.target_html_nodes:
-            node_value = response.xpath(node).get().encode(_UTF_8_)
-            asian_odds[self.asian_odds_fields[node]] = node_value
+            node_text = response.xpath(node).get()
+            if node_text:
+                node_value = node_text.encode(_UTF_8_)
+                asian_odds[self.asian_odds_fields[node]] = node_value
         # print asian_odds
         odds_array = response.meta.get("euro_odds_array")
         analysis_link = response.meta.get("analysis_link")
