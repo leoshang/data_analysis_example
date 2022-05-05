@@ -115,6 +115,7 @@ class SportsbookXslxExportPipeline(object):
         self.worksheet.write(self.row_count, 40, '即时主队水位'.encode('utf-8'))
         self.worksheet.write(self.row_count, 41, '即时盘口'.encode('utf-8'))
         self.worksheet.write(self.row_count, 42, '即时客队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 43, 'Crawl Link'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -216,5 +217,7 @@ class SportsbookXslxExportPipeline(object):
             self.worksheet.write(self.row_count, 41, item['asian_end_handicap'])
         if hasattr(item, 'asian_end_guestwager'):
             self.worksheet.write(self.row_count, 42, item['asian_end_guestwager'])
+        self.worksheet.write(self.row_count, 43, item['crawling_link'])
+
         self.row_count += 1
         return item

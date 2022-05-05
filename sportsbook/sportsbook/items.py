@@ -77,25 +77,5 @@ class EuroOdds(scrapy.Item):
     def __getitem__(self, item):
         return self.__dict__[item]
 
-    def __str__(self):
-        return "赛季：{}；比赛日：{}" \
-               "比赛: {}; 主队: {}; 主队排名: {};" \
-               "客队: {}; 客队排名: {};" \
-               "赔率机构Id：{}；赔率机构名称：{}" \
-               "初赔主胜: {}; 初赔平局: {}; 初赔客胜: {};" \
-               "即时终赔主胜: {}; 即时终赔平局: {}; 即时终赔客胜: {};" \
-               "初赔主胜（换算）概率: {}; " \
-               "初赔平局（换算）概率: {}; " \
-               "初赔客胜（换算）概率: {};" \
-               "终赔主胜（换算）概率: {}; " \
-               "终赔平局（换算）概率: {}; " \
-               "终赔客胜（换算）概率: {}; ".format(
-                self['season'], self.matchday,
-                self.matchname, self.hometeam_cn, self.home_ranking,
-                self.guestteam_cn, self.guest_ranking,
-                self.bookie_id, self.bookie_name_cn,
-                self.open_home_win, self.open_draw, self.open_guest_win,
-                self.end_home_win, self.end_draw, self.end_guest_win,
-                self.open_home_prob, self.open_draw_prob, self.open_guest_prob,
-                self.end_home_win_prob, self.end_draw_prob, self.end_guest_win_prob)
+
 
