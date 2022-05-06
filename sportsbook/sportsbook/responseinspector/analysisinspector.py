@@ -25,17 +25,19 @@ class AnalysisInspector:
         self.node_keymap = {}
         pass
 
-    def init_xpath(self, season):
-        if int(season) < 2013:
+    def init_xpath(self, response):
+        if response.xpath("//div[@id='porlet_5']").get():
+            home_table = "//div[@id='porlet_5']" + "/" + self.first_table + "/" + self.first_row + self.first_column \
+                         + "/" + self.first_table
+            guest_table = "//div[@id='porlet_5']" + "/" + self.first_table + "/" + self.first_row + self.second_column \
+                          + "/" + self.first_table
+            home_total_row = home_table + "/" + self.third_row
+            guest_total_row = guest_table + "/" + self.third_row
+        else:
             home_table = self.home_table_bgcolor
             guest_table = self.guest_table_bgcolor
-        else:
-            standing_div_id = "//div[@id='porlet_5']"
-            home_table = standing_div_id + self.first_table + self.first_row + self.first_column + self.first_table
-            guest_table = standing_div_id + self.first_table + self.second_row_row + self.second_column + self.first_table
-
-        home_total_row = home_table + self.third_row
-        guest_total_row = guest_table + self.third_row
+            home_total_row = home_table + self.third_row
+            guest_total_row = guest_table + self.third_row
 
         home_last_6match_row = home_table + self.sixth_row
         guest_last_6match_row = guest_table + self.sixth_row
@@ -52,10 +54,8 @@ class AnalysisInspector:
         home_win_of_last_6match = home_last_6match_row + self.third_column + self.text_val
         home_draw_of_last_6match = home_last_6match_row + self.fourth_column + self.text_val
         home_lost_of_last_6match = home_last_6match_row + self.fifth_column + self.text_val
+
         # 客队的积分，排名，胜率，近六场的胜平负
-
-
-
         guest_win_of_last_6match = guest_last_6match_row + self.third_column + self.text_val
         guest_draw_of_last_6match = guest_last_6match_row + self.fourth_column + self.text_val
         guest_lost_of_last_6match = guest_last_6match_row + self.fifth_column + self.text_val
@@ -80,7 +80,7 @@ class AnalysisInspector:
     def extract(self, response):
         odds_array = response.meta.get("odds_array")
         season = odds_array[0]['season'].split('-')[0]
-        target_html_nodes = self.init_xpath(season)
+        target_html_nodes = self.init_xpath(response)
         analysis = {}
         for node in target_html_nodes:
             # print node

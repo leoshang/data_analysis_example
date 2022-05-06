@@ -14,6 +14,8 @@ _JS_SUFFIX_ = '.js'
 _JS_DOMAIN_ = 'http://1x2d.win007.com/'
 _UTF_8_ = "utf-8"
 
+CURRENT_SEASON = 2014
+
 
 class SportsbookJavascriptParser(scrapy.Spider):
     # Scrapy is single-threaded, except the interactive shell and some tests, see source.

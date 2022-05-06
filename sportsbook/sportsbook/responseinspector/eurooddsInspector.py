@@ -35,7 +35,7 @@ class EuroOddsInspector:
         fixture_fields = {}
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
         # 老的Season的javascript返回的数据不含有关键次Var，分隔符是";"
-        if int(current_season.split('-')[0]) < 2013:
+        if int(current_season.split('-')[0]) < 2014:
             var_list = all_odds_oneline.split(";")
         else:
             var_list = all_odds_oneline.split(_JS_VAR_DELIMITER_)
