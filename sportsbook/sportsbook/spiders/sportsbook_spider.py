@@ -50,7 +50,11 @@ class SportsbookJavascriptParser(scrapy.Spider):
         self.euro_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['euro_odds_site']
         self.asian_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['asian_odds_site']
         self.analysis_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['analysis_site']
-
+        self.sofa_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['sofa_site']
+        self.sofa_season_site = SportsbookJavascriptParser.config_section_map('PremierLeague')['sofa_season_site']
+        self.current_season = SportsbookJavascriptParser.config_section_map('Season')['current_season']
+        self.sofa_season_id = SportsbookJavascriptParser.config_section_map('Season')[self.current_season]
+        self.sofa_season_site = self.sofa_season_site.replace('$season_id', self.sofa_season_id)
         self.append_match_url(start_url, season_list, round_total)
         self.odds_team_title = ''
         self.euroodds_inspector = EuroOddsInspector()
