@@ -1,0 +1,57 @@
+＃ https://www.sofascore.com/tournament/football/england/premier-league/17 有Dropdown可选择Season，
+＃ season 有 自己的Id，例如选择了17/18赛季，其对应的Id就是 13380
+＃ 选择了赛季后，页面会显示这个赛季的每一轮次的所有比赛。每场比赛都有自己的uniqueId 及 URL
+＃ 例如 https://api.sofascore.com/api/v1/event/7438023
+
+＃ https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/team-events/total
+＃ team_events_total.README 里可以发现所有本赛季13380的比赛的Id
+
+# Sofascore的球迷Vote的数据从Season 2012/13才开始有。
+
+英超＝https://api.sofascore.com/api/v1/unique-tournament/17/
+英冠＝https://api.sofascore.com/api/v1/unique-tournament/18/
+
+[leagues]
+premier-leagues = https://api.sofascore.com/api/v1/unique-tournament/17/
+seasons = [37036, 29415, 23776, 17359, 13380, 11733, 10356, 8186, 6311, 4710]
+# season-37036 = 2021/2022
+# season-29415 = 2020/2021
+# season-23776 = 2019/2020
+# season-17359 = 2018/2019
+# season-13380 = 2017/2018
+# season-11733 = 2016/2017
+# season-10356 = 2015/2016
+# season-8186  = 2014/2015
+# season-6311  = 2013/2014
+# season-4710  = 2012/2013
+
+# All matches (each match is called event and has an unique eventId) of the season, for example, $<season_id> = 13380
+all_matches_of_season = https://api.sofascore.com/api/v1/unique-tournament/17/season/$<season_id>/team-events/total
+
+# 这里可以找到本赛季每支队伍的静态数据，最重要的就是它的球迷数量.
+teams_profile = https://api.sofascore.com/api/v1/unique-tournament/17/season/$<season_id>/standings/total
+
+# 是我们需要的球迷对比赛的支持度
+votes_of_match = https://api.sofascore.com/api/v1/event/7438023/votes
+
+＃每个赛季的数据
+https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/rounds
+https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/total
+https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/home
+https://api.sofascore.com/api/v1/unique-tournament/17/season/37036/standings/away
+
+＃关注力度打的比赛
+https://api.sofascore.com/api/v1/unique-tournament/17/featured-events
+
+https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/standings/total
+这里可以找到本赛季每支队伍的静态数据，最重要的就是它的球迷数量，这不是vote的球迷数，但两者肯定有关系
+
+https://api.sofascore.com/api/v1/unique-tournament/17/season/13380/rounds 却可以得到所有轮次，见rounds.README
+
+# event就是比赛， 7438023 就是比赛的id
+https://api.sofascore.com/api/v1/event/7438023
+Crystal Palace - West Bromwich Albion
+对应的URL就是 <a data-id="7438023" href="/west-bromwich-albion-crystal-palace/hi">
+
+
+

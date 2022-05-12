@@ -1,0 +1,94 @@
+https://api.sofascore.com/api/v1/unique-tournament/17/featured-events
+
+{
+   "featuredEvents":[
+      {
+         "tournament":{
+            "name":"Premier League",
+            "slug":"premier-league",
+            "category":{
+               "name":"England",
+               "slug":"england",
+               "sport":{
+                  "name":"Football",
+                  "slug":"football",
+                  "id":1
+               },
+               "id":1,
+               "flag":"england",
+               "alpha2":"EN"
+            },
+            "uniqueTournament":{
+               "name":"Premier League",
+               "slug":"premier-league",
+               "category":{
+                  "name":"England",
+                  "slug":"england",
+                  "sport":{
+                     "name":"Football",
+                     "slug":"football",
+                     "id":1
+                  },
+                  "id":1,
+                  "flag":"england",
+                  "alpha2":"EN"
+               },
+               "userCount":1014461,
+               "id":17
+            },
+            "priority":261,
+            "id":1
+         },
+         "customId":"mcYb",
+         "status":{
+            "code":0,
+            "description":"Not started",
+            "type":"notstarted"
+         },
+         "winnerCode":0,
+         "homeTeam":{
+            "name":"Manchester United",
+            "slug":"manchester-united",
+            "shortName":"Man Utd",
+            "gender":"M",
+            "userCount":1089388,
+            "nameCode":"MUN",
+            "national":false,
+            "type":0,
+            "id":35,
+            "teamColors":{
+               "primary":"#ff0000",
+               "secondary":"#373737",
+               "text":"#373737"
+            }
+         },
+         "awayTeam":{
+            "name":"Chelsea",
+            "slug":"chelsea",
+            "shortName":"Chelsea",
+            "gender":"M",
+            "userCount":896084,
+            "nameCode":"CHE",
+            "disabled":false,
+            "national":false,
+            "type":0,
+            "id":38,
+            "teamColors":{
+               "primary":"#0310a7",
+               "secondary":"#ffffff",
+               "text":"#ffffff"
+            }
+         },
+         "homeScore":{
+
+         },
+         "awayScore":{
+
+         },
+         "id":9576293,
+         "startTimestamp":1651171500,
+         "slug":"chelsea-manchester-united",
+         "finalResultOnly":false
+      }
+   ]
+}
