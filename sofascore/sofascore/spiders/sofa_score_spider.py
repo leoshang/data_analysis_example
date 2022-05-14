@@ -2,6 +2,7 @@
 from __future__ import division
 import scrapy
 import configparser
+import json
 
 from sofascore.responseinspector.sofascore_inspector import SofaScoreInspector
 
@@ -37,29 +38,34 @@ class SofaScoreCrawler(scrapy.Spider):
         self.start_urls = []
         self.sofa_url = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_site']
         self.sofa_season_site = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_season_site']
+        self.vote_site = SofaScoreCrawler.config_section_map('PremierLeague')['vote_site']
         self.current_season = SofaScoreCrawler.config_section_map('Season')['current_season']
         self.sofa_season_id = SofaScoreCrawler.config_section_map('Season')[self.current_season]
         self.sofa_season_site = self.sofa_season_site.replace('$season_id', self.sofa_season_id)
-        self.append_match_url(self.sofa_season_site)
+        self.start_urls.append(self.sofa_season_site)
         self.sofascore_inspector = SofaScoreInspector()
         print(self.start_urls)
 
     item_count = 0
+
     def parse(self, response):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
-        
-        request_euroodds = scrapy.Request(e_odds_url, callback=self.sofascore_inspector.extract_score,
-                                              meta={'asian_odds_link': a_odds_url,
-                                                    'analysis_link': analysis_url,
-                                                    'current_season': current_season})
-            yield request_euroodds
 
-    def parse_odds(self, response):
-        odds_rows = response.xpath(self.SCRIPT_TAG)
-        asian_odds_url = response.meta.get('asian_odds_link')
-        analysis_url = response.meta.get('analysis_link')
-        current_season = response.meta.get('current_season')
+        all_match_data = json.loads(response.body.encode(_UTF_8_))
+        data1_array = all_match_data['tournamentTeamEvents']['1']
+        for match_key in data1_array.keys():
+            for match in data1_array[match_key]:
+                # print match['id']
+                # print match['homeTeam']['name']
+                # print match['homeTeam']['userCount']
+                # print match['homeScore']['normaltime']
+                # print match['awayTeam']['name']
+                # print match['awayScore']['normaltime']
+                # print match['awayTeam']['userCount']
 
-
-
+                match_vote_url = self.vote_site.replace('$event_id', str(match['id']))
+                print match_vote_url
+                request_event = scrapy.Request(match_vote_url, callback=self.sofascore_inspector.extract_score,
+                                               meta={'current_season': self.current_season})
+                yield request_event
