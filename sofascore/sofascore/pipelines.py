@@ -16,6 +16,8 @@ from scrapy.http import Request
 from scrapy import signals
 import xlsxwriter
 
+from sofascore.spiders.sofa_config import SofaScoreConfiguration
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -34,7 +36,8 @@ class SofascorePipeline:
         return pipeline
 
     def spider_opened(self, spider):
-        league_season = 'SofaScore-' + spider.league + '-' + spider.current_season
+        league_season = 'SofaScore-' + SofaScoreConfiguration.get_league_name() + \
+                        '-' + SofaScoreConfiguration.get_current_season()
         self.workbook = xlsxwriter.Workbook('%s_votes.xlsx' % league_season)
         self.worksheet = self.workbook.add_worksheet()
         self.worksheet.set_default_row(25)

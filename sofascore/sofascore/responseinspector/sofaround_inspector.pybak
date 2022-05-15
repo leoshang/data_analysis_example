@@ -1,0 +1,42 @@
+import scrapy
+import json
+from datetime import datetime
+
+from sofascore.items import SofascoreItem
+from sofascore.responseinspector.sofavotes_inspector import SofaVotesInspector
+
+
+class SofaRoundInspector:
+    def __init__(self):
+        self.votes_inspector = SofaVotesInspector()
+        pass
+
+    def extract_all_matches(self, response):
+        current_round = response.meta.get('next_round')
+        all_match_data = json.loads(response.body.encode('utf-8'))
+        data1_array = all_match_data['events']
+
+        for match in data1_array:
+            score_item = SofascoreItem()
+            score_item['match_id'] = match['id']
+            score_item['startTimestamp'] = datetime.utcfromtimestamp(match['startTimestamp']).strftime(
+                '%Y-%m-%d %H:%M:%S')
+            score_item['hometeam'] = match['homeTeam']['name']
+            score_item['hometeam_fans'] = match['homeTeam']['userCount']
+            score_item['hometeam_score'] = match['homeScore']['normaltime']
+
+            score_item['guestteam'] = match['awayTeam']['name']
+            score_item['guestteam_fans'] = match['awayTeam']['userCount']
+            score_item['guestteam_score'] = match['awayScore']['normaltime']
+
+            match_vote_url = self.vote_site.replace('$event_id', str(match['id']))
+            print match_vote_url
+
+            next_round = current_round + 1
+            next_round_url = self.season_round_site.replace('$round_number', str(next_round))
+
+            request_event = scrapy.Request(match_vote_url, callback=self.votes_inspector.extract_votes,
+                                           meta={'score_item': score_item,
+                                                 'next_round': next_round,
+                                                 'next_round_url': next_round_url})
+            yield request_event
