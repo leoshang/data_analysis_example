@@ -63,7 +63,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'sofascore.pipelines.SofascorePipeline': 300,
+    'sofascore.pipelines.SofascorePipeline': 100,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
