@@ -39,15 +39,23 @@ class SofaScoreCrawler(scrapy.Spider):
         super(SofaScoreCrawler, self).__init__(*a, **kw)
         self.start_urls = []
         self.league = SofaScoreCrawler.config_section_map('PremierLeague')['league']
-        self.sofa_url = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_site']
-        self.sofa_season_site = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_season_site']
-        self.vote_site = SofaScoreCrawler.config_section_map('PremierLeague')['vote_site']
         self.current_season = SofaScoreCrawler.config_section_map('Season')['current_season']
-        self.sofa_season_id = SofaScoreCrawler.config_section_map('Season')[self.current_season]
-        self.sofa_season_site = self.sofa_season_site.replace('$season_id', self.sofa_season_id)
-        self.start_urls.append(self.sofa_season_site)
+        self.vote_site = SofaScoreCrawler.config_section_map('PremierLeague')['vote_site']
         self.sofascore_inspector = SofaScoreInspector()
+
+        self.sofa_season_site = self.extract_season_link()
+        self.season_round_site = self.sofa_season_site + SofaScoreCrawler.config_section_map('PremierLeague')['season_round_site']
+
+        for i in range(1, 39):
+            round_link = self.season_round_site.replace('$round_number', str(i))
+            self.start_urls.append(round_link)
+
         print(self.start_urls)
+
+    def extract_season_link(self):
+        sofa_season_id = SofaScoreCrawler.config_section_map('Season')[self.current_season]
+        sofa_season_site = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_season_site']
+        return sofa_season_site.replace('$season_id', sofa_season_id)
 
     item_count = 0
 
