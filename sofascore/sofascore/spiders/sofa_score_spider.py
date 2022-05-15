@@ -3,7 +3,9 @@ from __future__ import division
 import scrapy
 import configparser
 import json
+from datetime import datetime
 
+from sofascore.items import SofascoreItem
 from sofascore.responseinspector.sofascore_inspector import SofaScoreInspector
 
 _SOFA_SCORE_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sofascore/sofascore/spiders/premier-league.ini'
@@ -36,6 +38,7 @@ class SofaScoreCrawler(scrapy.Spider):
     def __init__(self, *a, **kw):
         super(SofaScoreCrawler, self).__init__(*a, **kw)
         self.start_urls = []
+        self.league = SofaScoreCrawler.config_section_map('PremierLeague')['league']
         self.sofa_url = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_site']
         self.sofa_season_site = SofaScoreCrawler.config_section_map('PremierLeague')['sofa_season_site']
         self.vote_site = SofaScoreCrawler.config_section_map('PremierLeague')['vote_site']
@@ -56,16 +59,19 @@ class SofaScoreCrawler(scrapy.Spider):
         data1_array = all_match_data['tournamentTeamEvents']['1']
         for match_key in data1_array.keys():
             for match in data1_array[match_key]:
-                # print match['id']
-                # print match['homeTeam']['name']
-                # print match['homeTeam']['userCount']
-                # print match['homeScore']['normaltime']
-                # print match['awayTeam']['name']
-                # print match['awayScore']['normaltime']
-                # print match['awayTeam']['userCount']
+                score_item = SofascoreItem()
+                score_item['match_id'] = match['id']
+                score_item['startTimestamp'] = datetime.utcfromtimestamp(match['startTimestamp']).strftime('%Y-%m-%d %H:%M:%S')
+                score_item['hometeam'] = match['homeTeam']['name']
+                score_item['hometeam_fans'] = match['homeTeam']['userCount']
+                score_item['hometeam_score'] = match['homeScore']['normaltime']
+                score_item['guestteam'] = match['awayTeam']['name']
+                score_item['guestteam_fans'] = match['awayTeam']['userCount']
+                score_item['guestteam_score'] = match['awayScore']['normaltime']
 
                 match_vote_url = self.vote_site.replace('$event_id', str(match['id']))
                 print match_vote_url
                 request_event = scrapy.Request(match_vote_url, callback=self.sofascore_inspector.extract_score,
-                                               meta={'current_season': self.current_season})
+                                               meta={'current_season': self.current_season,
+                                                     'score_item': score_item})
                 yield request_event
