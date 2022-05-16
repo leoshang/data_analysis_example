@@ -41,7 +41,8 @@ class SofaScoreCrawler(scrapy.Spider):
             score_item['startTimestamp'] = datetime.utcfromtimestamp(match['startTimestamp']).strftime('%Y-%m-%d %H:%M:%S')
             score_item['hometeam'] = match['homeTeam']['name']
             score_item['hometeam_fans'] = match['homeTeam']['userCount']
-
+            # print match['tournament']['name']
+            # print match['slug']
             if match['homeScore']:
                 score_item['hometeam_score'] = match['homeScore']['normaltime']
             else:
