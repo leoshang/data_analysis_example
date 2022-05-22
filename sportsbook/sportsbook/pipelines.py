@@ -15,6 +15,8 @@ from scrapy import signals
 import xlsxwriter
 
 from sportsbook.exporter.oddsexporter import OddsExporter
+from sportsbook.spiders.sportsbook_config import SportsbookConfiguration
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -53,7 +55,7 @@ class SportsbookXslxExportPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        file_prefix = spider.league + '-' + spider.current_season
+        file_prefix = SportsbookConfiguration.get_league() + '-' + SportsbookConfiguration.get_current_season()
         self.workbook = xlsxwriter.Workbook('%s.xlsx' % file_prefix)
         self.worksheet = self.workbook.add_worksheet()
         self.worksheet.set_default_row(25)
