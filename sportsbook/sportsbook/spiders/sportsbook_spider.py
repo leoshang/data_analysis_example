@@ -47,6 +47,7 @@ class SportsbookJavascriptParser(scrapy.Spider):
         start_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['season_round_url']
         season_list = SportsbookJavascriptParser.config_section_map('PremierLeague')['all_season']
         round_total = SportsbookJavascriptParser.config_section_map('PremierLeague')['round_total']
+        self.league = SportsbookJavascriptParser.config_section_map('PremierLeague')['league']
         self.euro_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['euro_odds_site']
         self.asian_odds_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['asian_odds_site']
         self.analysis_url = SportsbookJavascriptParser.config_section_map('PremierLeague')['analysis_site']

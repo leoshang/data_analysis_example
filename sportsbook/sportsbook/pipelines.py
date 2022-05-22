@@ -53,7 +53,8 @@ class SportsbookXslxExportPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        self.workbook = xlsxwriter.Workbook('%s_products.xlsx' % spider.name)
+        file_prefix = spider.league + '-' + spider.current_season
+        self.workbook = xlsxwriter.Workbook('%s.xlsx' % file_prefix)
         self.worksheet = self.workbook.add_worksheet()
         self.worksheet.set_default_row(25)
         self.output_header()

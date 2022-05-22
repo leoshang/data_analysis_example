@@ -1,0 +1,92 @@
+https://api.sofascore.com/api/v1/event/9576085/team-streaks
+
+{
+   "general":[
+      {
+         "name":"Wins",
+         "value":"3",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"No wins",
+         "value":"4",
+         "team":"home",
+         "continued":false
+      },
+      {
+         "name":"No goals conceded",
+         "value":"3",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"More than 2.5 goals",
+         "value":"5\/7",
+         "team":"home",
+         "continued":true
+      },
+      {
+         "name":"Less than 2.5 goals",
+         "value":"5\/6",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"First to score",
+         "value":"5\/6",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"Less than 4.5 cards",
+         "value":"10\/10",
+         "team":"home",
+         "continued":false
+      }
+   ],
+   "head2head":[
+      {
+         "name":"No losses",
+         "value":"5",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"Without clean sheet",
+         "value":"5",
+         "team":"home",
+         "continued":false
+      },
+      {
+         "name":"Without clean sheet",
+         "value":"3",
+         "team":"away",
+         "continued":true
+      },
+      {
+         "name":"Less than 2.5 goals",
+         "value":"8\/10",
+         "team":"both",
+         "continued":false
+      },
+      {
+         "name":"First to score",
+         "value":"5\/5",
+         "team":"away",
+         "continued":false
+      },
+      {
+         "name":"Less than 4.5 cards",
+         "value":"7\/9",
+         "team":"both",
+         "continued":false
+      },
+      {
+         "name":"Less than 10.5 corners",
+         "value":"4\/5",
+         "team":"both",
+         "continued":true
+      }
+   ]
+}
