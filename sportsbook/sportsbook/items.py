@@ -77,5 +77,7 @@ class EuroOdds(scrapy.Item):
     def __getitem__(self, item):
         return self.__dict__[item]
 
+    # def __str__(self):
+    #     return str(self.__dict__)
 
 

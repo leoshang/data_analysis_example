@@ -42,13 +42,15 @@ FILES_STORE = "/Users/leishang/helenstreet/python/sportsbook/output/odds_history
 IMAGES_STORE = "/Users/leishang/helenstreet/python/sportsbook/output/image_download/"
 
 ITEM_PIPELINES = {
-    'sportsbook.pipelines.SportsbookXslxExportPipeline': 800
+    'sportsbook.pipelines.Win007XslxExportPipeline': 800
 }
 
+# for export into csv not for xslx. XSLX export is directly done in Win007XslxExportPipeline
 FEED_EXPORTERS = {
     'csv': 'sportsbook.exporter.oddsexporter.OddsExporter'
 }
 
+# for export into csv.
 FIELDS_TO_EXPORT = [
     'match_id',
     'match_time',

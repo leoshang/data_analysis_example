@@ -41,7 +41,7 @@ sys.setdefaultencoding('utf8')
     #    return response.meta['title']
 
 
-class SportsbookXslxExportPipeline(object):
+class Win007XslxExportPipeline(object):
     def __init__(self):
         self.workbook = {}
         self.worksheet = {}
