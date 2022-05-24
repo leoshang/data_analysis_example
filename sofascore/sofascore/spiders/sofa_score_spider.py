@@ -37,6 +37,7 @@ class SofaScoreCrawler(scrapy.Spider):
         for match in data1_array:
             score_item = SofascoreItem()
             # print json.dumps(match)
+            score_item['round'] = match['roundInfo']['round']
             score_item['match_id'] = match['id']
             score_item['startTimestamp'] = datetime.utcfromtimestamp(match['startTimestamp']).strftime('%Y-%m-%d %H:%M:%S')
             score_item['hometeam'] = match['homeTeam']['name']

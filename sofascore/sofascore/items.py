@@ -7,6 +7,7 @@ import scrapy
 
 
 class SofascoreItem(scrapy.Item):
+    round = scrapy.Field()
     match_id = scrapy.Field()
     startTimestamp = scrapy.Field()
     hometeam = scrapy.Field()

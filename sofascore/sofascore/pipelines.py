@@ -45,17 +45,18 @@ class SofascorePipeline:
 
     def output_header(self):
         # self.worksheet.write(self.row_count, 5, self.odds_company_title)
-        self.worksheet.write(self.row_count, 0, '比赛ID'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 1, '比赛时间'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 2, '主队'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 3, '客队'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 4, '主队比分'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 5, '客队比分'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 6, '支持主赢人数'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 7, '支持平局人数'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 8, '支持客赢人数'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 9, '主队球迷数'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 10, '客队球迷数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 0, '本轮'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 1, '比赛ID'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 2, '比赛时间'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 3, '主队'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 4, '客队'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 5, '主队比分'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 6, '客队比分'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 7, '支持主赢人数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 8, '支持平局人数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 9, '支持客赢人数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 10, '主队球迷数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 11, '客队球迷数'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -63,31 +64,33 @@ class SofascorePipeline:
 
     def process_item(self, item, spider):
         # print('item[%s] to be processed:' % (item['name']))
+        if hasattr(item, 'round'):
+            self.worksheet.write(self.row_count, 0, item['round'])
         if hasattr(item, 'match_id'):
-            self.worksheet.write(self.row_count, 0, item['match_id'])
+            self.worksheet.write(self.row_count, 1, item['match_id'])
         if hasattr(item, 'startTimestamp'):
-            self.worksheet.write(self.row_count, 1, item['startTimestamp'])
+            self.worksheet.write(self.row_count, 2, item['startTimestamp'])
 
         if hasattr(item, 'hometeam'):
-            self.worksheet.write(self.row_count, 2, item['hometeam'])
+            self.worksheet.write(self.row_count, 3, item['hometeam'])
         if hasattr(item, 'guestteam'):
-            self.worksheet.write(self.row_count, 3, item['guestteam'])
+            self.worksheet.write(self.row_count, 4, item['guestteam'])
 
         if hasattr(item, 'hometeam_score'):
-            self.worksheet.write(self.row_count, 4, item['hometeam_score'])
+            self.worksheet.write(self.row_count, 5, item['hometeam_score'])
         if hasattr(item, 'guestteam_score'):
-            self.worksheet.write(self.row_count, 5, item['guestteam_score'])
+            self.worksheet.write(self.row_count, 6, item['guestteam_score'])
 
         if hasattr(item, 'vote_home_win'):
-            self.worksheet.write(self.row_count, 6, item['vote_home_win'])
+            self.worksheet.write(self.row_count, 7, item['vote_home_win'])
         if hasattr(item, 'vote_draw'):
-            self.worksheet.write(self.row_count, 7, item['vote_draw'])
+            self.worksheet.write(self.row_count, 8, item['vote_draw'])
         if hasattr(item, 'vote_guest_win'):
-            self.worksheet.write(self.row_count, 8, item['vote_guest_win'])
+            self.worksheet.write(self.row_count, 9, item['vote_guest_win'])
 
         if hasattr(item, 'hometeam_fans'):
-            self.worksheet.write(self.row_count, 9, item['hometeam_fans'])
+            self.worksheet.write(self.row_count, 10, item['hometeam_fans'])
         if hasattr(item, 'guestteam_fans'):
-            self.worksheet.write(self.row_count, 10, item['guestteam_fans'])
+            self.worksheet.write(self.row_count, 11, item['guestteam_fans'])
         self.row_count += 1
         return item
