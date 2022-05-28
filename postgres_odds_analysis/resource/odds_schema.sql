@@ -108,11 +108,30 @@ create table bookie(
  	  REFERENCES asiaOdds(id)
 )
 
+create table votes(
+    id serial primary key,
+    host_win_vote int,
+    draw_vote int,
+    guest_win_vote int,
+    host_win_ratio decimal(4,2),
+    draw_ratio decimal(4,2),
+    guest_win_ratio decimal(4,2),
+    host_teamstanding_id int not null,
+    guest_teamstanding_id int not null,
+    CONSTRAINT fk_asiaodds_host_teamstanding
+       FOREIGN KEY(host_teamstanding_id)
+ 	  REFERENCES team_standing(id),
+ 	CONSTRAINT fk_asiaodds_guest_teamstanding
+       FOREIGN KEY(guest_teamstanding_id)
+ 	  REFERENCES team_standing(id)
+)
+
 -- drop table team_standing;
 -- drop table team;
 -- drop table round;
 -- drop table season;
 -- drop table league;
 -- drop table bookie;
+-- drop table votes;
 -- drop table euroOdds;
 -- drop table asiaOdds;
