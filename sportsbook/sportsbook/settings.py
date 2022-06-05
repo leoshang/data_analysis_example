@@ -9,7 +9,7 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'worldofsweets'
+BOT_NAME = 'livescore'
 
 SPIDER_MODULES = ['sportsbook.spiders']
 NEWSPIDER_MODULE = 'sportsbook.spiders'
@@ -22,11 +22,12 @@ NEWSPIDER_MODULE = 'sportsbook.spiders'
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100101 Firefox/44.0"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+# ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 2
-CONCURRENT_ITEMS = 2
+CONCURRENT_REQUESTS = 1
+CONCURRENT_ITEMS = 1
+CONCURRENT_REQUESTS_PER_DOMAIN = 1
 
 DEFAULT_REQUEST_HEADERS = {
    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -35,12 +36,12 @@ DEFAULT_REQUEST_HEADERS = {
 
 # https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy
 # default 0.25  # 250 ms of delay
-# DOWNLOAD_DELAY=
+# DOWNLOAD_DELAY = 10
 
 # If you set 1 for both start and max delay, it will wait 1 second in each request.
-AUTOTHROTTLE_ENABLED = True
-AUTOTHROTTLE_START_DELAY = 1
-AUTOTHROTTLE_MAX_DELAY = 3
+# AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_START_DELAY = 3
+# AUTOTHROTTLE_MAX_DELAY = 10
 
 SPIDER_MIDDLEWARES = {
     'scrapy.spidermiddlewares.referer.RefererMiddleware': True

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-
 _UTF_8_ = "utf-8"
 
 
 # 第一轮的数据可以省略因为是上个赛季的！！！
+
+
 class AnalysisInspector:
+    counter = 0
+
     def __init__(self):
         self.home_table_bgcolor = "//table[@bgcolor='#E6CF9F'][1]"
         self.guest_table_bgcolor = "//table[@bgcolor='#B0D2E3'][1]"
@@ -79,7 +82,7 @@ class AnalysisInspector:
 
     def extract(self, response):
         odds_array = response.meta.get("odds_array")
-        season = odds_array[0]['season'].split('-')[0]
+        # season = odds_array[0]['season'].split('-')[0]
         target_html_nodes = self.init_xpath(response)
         analysis = {}
         for node in target_html_nodes:
@@ -95,4 +98,5 @@ class AnalysisInspector:
             # append asian_odds into euro_odds
             x.update(analysis)
             yield x
+
         pass

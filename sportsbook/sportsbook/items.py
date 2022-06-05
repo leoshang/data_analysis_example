@@ -18,7 +18,7 @@ class EuroOdds(scrapy.Item):
     schedule_id = scrapy.Field()
     match_id = scrapy.Field()
     season = scrapy.Field()
-    matchday = scrapy.Field()
+    round = scrapy.Field()
     match_time = scrapy.Field()
 
     hometeam = scrapy.Field()

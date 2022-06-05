@@ -70,7 +70,7 @@ class Win007XslxExportPipeline(object):
         self.worksheet.write(self.row_count, 0, '联赛名称'.encode('utf-8'))
         self.worksheet.write(self.row_count, 1, '联赛Id'.encode('utf-8'))
         self.worksheet.write(self.row_count, 2, '赛季'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 3, '比赛日'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 3, '轮次'.encode('utf-8'))
         self.worksheet.write(self.row_count, 4, '比赛时间'.encode('utf-8'))
 
         self.worksheet.write(self.row_count, 5, '主队'.encode('utf-8'))
@@ -133,7 +133,7 @@ class Win007XslxExportPipeline(object):
         if hasattr(item, 'season'):
             self.worksheet.write(self.row_count, 2, item['season'])
         if hasattr(item, 'matchday'):
-            self.worksheet.write(self.row_count, 3, item['matchday'])
+            self.worksheet.write(self.row_count, 3, item['round'])
         if hasattr(item, 'match_time'):
             self.worksheet.write(self.row_count, 4, item['match_time'])
 
