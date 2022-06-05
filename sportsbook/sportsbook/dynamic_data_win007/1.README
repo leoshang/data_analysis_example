@@ -1,20 +1,20 @@
-英超所有赛季汇总=http://zq.win007.com/cn/League/36.html
+英超所有赛季汇总=http://zq.titan007.com/cn/League/36.html
 只关注下面赛季，因为Sofa只从2012开始才有vote数据
 2021-2022，2020-2021，2019-2020，2018-2019，2017-2018，2016-2017，2015-2016，2014-2015，2013-2014，2012-2013
 
-单个赛季，例如2020－2021所有轮次比赛的地址 http://zq.win007.com/cn/League/2020-2021/36.html
+单个赛季，例如2020－2021所有轮次比赛的地址 http://zq.titan007.com/cn/League/2020-2021/36.html
 赛季某轮次的比赛地址，例如2020-2021第一轮的所有比赛
-http://zq.win007.com/League/LeagueOddsAjax?sclassId=36&subSclassId=0&matchSeason=2020-2021&round=1
+http://zq.titan007.com/League/LeagueOddsAjax?sclassId=36&subSclassId=0&matchSeason=2020-2021&round=1
 
 其提供的所有比赛数据格式如下：
 oddsData["O_<matchId>"]
 此轮本场比赛详细的数据所在地址是如下格式：
-http://op1.win007.com/oddslist/<matchId>.htm
+http://op1.titan007.com/oddslist/<matchId>.htm
 例如：
-http://op1.win007.com/oddslist/1903811.htm
+http://op1.titan007.com/oddslist/1903811.htm
 
 此轮本场比赛的分析数据例如排名，进六场，双方对战历史成绩的链接地址
-http://zq.win007.com/analysis/1903811cn.htm
+http://zq.titan007.com/analysis/1903811cn.htm
 
 同一个matchId 有三个oddsData：
 第一个是欧赔的，关注的是下面几个Bookie： 82= 立博； 115 ＝ 威廉； 370 ＝ OddSet；

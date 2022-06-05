@@ -25,13 +25,22 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
-CONCURRENT_ITEMS = 1
+CONCURRENT_REQUESTS = 2
+CONCURRENT_ITEMS = 2
 
 DEFAULT_REQUEST_HEADERS = {
    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
    'Accept-Language': 'de,en-US;q=0.7,en;q=0.3',
 }
+
+# https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy
+# default 0.25  # 250 ms of delay
+# DOWNLOAD_DELAY=
+
+# If you set 1 for both start and max delay, it will wait 1 second in each request.
+AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_START_DELAY = 1
+AUTOTHROTTLE_MAX_DELAY = 3
 
 SPIDER_MIDDLEWARES = {
     'scrapy.spidermiddlewares.referer.RefererMiddleware': True

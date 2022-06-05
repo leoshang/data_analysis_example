@@ -10,7 +10,7 @@ class Win007(scrapy.Spider):
     # Scrapy is single-threaded, except the interactive shell and some tests, see source.
     # Scrapy does most of it's work synchronously. However, the handling of requests is done asynchronously.
     name = "sportsbookspider"
-    allowed_domains = ["win007.com"]
+    allowed_domains = ["titan007.com"]
 
     def __init__(self, *a, **kw):
         self.start_urls = []
