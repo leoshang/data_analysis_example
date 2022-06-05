@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
+
 import scrapy
 from scrapy import Request
+from scrapy.signalmanager import SignalManager
+from scrapy.crawler import Crawler
+from scrapy.crawler import signals
 
-from sportsbook.responseinspector.analysisinspector import AnalysisInspector
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 from sportsbook.spiders.sportsbook_config import SportsbookConfiguration
 
@@ -15,7 +18,11 @@ class Win007(scrapy.Spider):
     allowed_domains = ["titan007.com"]
     counter = 0
 
-    def __init__(self, *a, **kw):
+    def __init__(self, *args, **kwargs):
+        super(Win007, self).__init__(*args, **kwargs)
+        sig = SignalManager(scrapy.crawler.signals)
+        sig.connect(self.item_scraped, signal=signals.item_scraped)
+        sig.connect(self.spider_closed, signal=signals.spider_closed)
         self.start_urls = []
         self.current_round = 1
         self.euro_odds_inspector = EuroOddsInspector()
@@ -26,7 +33,6 @@ class Win007(scrapy.Spider):
             .replace('$1', SportsbookConfiguration.get_current_season())
         # self.start_urls.append(str(self.season_url).replace('$2', str(self.current_round)))
         # for r in range int(str(SportsbookConfiguration.get_round_total()))
-        print(self.start_urls)
 
     def start_requests(self):
         next_round_url = str(self.season_url).replace('$2', str(self.current_round))
@@ -36,8 +42,7 @@ class Win007(scrapy.Spider):
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')
         match_array = match_bloc.split(";")
-        round_splitor = response.url.split("round=")
-        current_round = round_splitor[1]
+
         for index, m in enumerate(match_array):
             match_id = self.extract_match_id(m)
             # the last two entries 30 and 31 are empty.
@@ -52,7 +57,7 @@ class Win007(scrapy.Spider):
                                                meta={'scrapy_instance': scrapy,
                                                      'asian_odds_link': a_odds_url,
                                                      'analysis_link': analysis_url,
-                                                     'current_round': current_round})
+                                                     'current_round': self.current_round})
             yield request_euro_odds
             Win007.counter += 1
 
@@ -69,3 +74,13 @@ class Win007(scrapy.Spider):
             return id_array[1]
         else:
             return None
+
+    def spider_closed(self, spider):
+        self.driver.quit()
+
+    def item_scraped(self):
+        if self.current_round < 3:
+            self.current_round += 1
+            # i need to call the processDetails function here for the next itemID
+            # and the process needs to contine till the itemID finishes
+            self.start_requests()
