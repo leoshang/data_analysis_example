@@ -6,6 +6,7 @@ from scrapy import Request
 from scrapy.signalmanager import SignalManager
 from scrapy.crawler import Crawler
 from scrapy.crawler import signals
+from pydispatch import dispatcher
 
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 from sportsbook.spiders.sportsbook_config import SportsbookConfiguration
@@ -16,15 +17,16 @@ class Win007(scrapy.Spider):
     # Scrapy does most of it's work synchronously. However, the handling of requests is done asynchronously.
     name = "sportsbookspider"
     allowed_domains = ["titan007.com"]
-    counter = 0
 
     def __init__(self, *args, **kwargs):
         super(Win007, self).__init__(*args, **kwargs)
-        sig = SignalManager(scrapy.crawler.signals)
-        sig.connect(self.item_scraped, signal=signals.item_scraped)
-        sig.connect(self.spider_closed, signal=signals.spider_closed)
+        # sig = SignalManager(scrapy.crawler.signals)
+        # sig = SignalManager(scrapy.crawler.signals)
+        dispatcher.connect(self.item_scraped, signal=signals.item_scraped)
+        dispatcher.connect(self.spider_closed, signal=signals.spider_closed)
         self.start_urls = []
         self.current_round = 1
+        self.counter = 0
         self.euro_odds_inspector = EuroOddsInspector()
         self.e_odds_site = SportsbookConfiguration.get_euro_odds_site()
         self.a_odds_site = SportsbookConfiguration.get_asian_odds_site()
@@ -59,7 +61,6 @@ class Win007(scrapy.Spider):
                                                      'analysis_link': analysis_url,
                                                      'current_round': self.current_round})
             yield request_euro_odds
-            Win007.counter += 1
 
     # extract 851540 out of oddsData["O_851540"]=[[97,1.35,4.8,8], ...]]
     def extract_match_id(self, m):
@@ -76,11 +77,10 @@ class Win007(scrapy.Spider):
             return None
 
     def spider_closed(self, spider):
-        self.driver.quit()
+        print self.counter
+        print 'spider closed'
 
-    def item_scraped(self):
-        if self.current_round < 3:
-            self.current_round += 1
+    def item_scraped(self, item, response, spider):
+        self.counter += 1
             # i need to call the processDetails function here for the next itemID
             # and the process needs to contine till the itemID finishes
-            self.start_requests()

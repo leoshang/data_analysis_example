@@ -132,7 +132,7 @@ class Win007XslxExportPipeline(object):
             self.worksheet.write(self.row_count, 1, item['match_id'])
         if hasattr(item, 'season'):
             self.worksheet.write(self.row_count, 2, item['season'])
-        if hasattr(item, 'matchday'):
+        if hasattr(item, 'round'):
             self.worksheet.write(self.row_count, 3, item['round'])
         if hasattr(item, 'match_time'):
             self.worksheet.write(self.row_count, 4, item['match_time'])
