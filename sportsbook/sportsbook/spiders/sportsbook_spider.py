@@ -8,6 +8,7 @@ from scrapy.crawler import Crawler
 from scrapy.crawler import signals
 from pydispatch import dispatcher
 
+from sportsbook.responseinspector.analysisinspector import AnalysisInspector
 from sportsbook.responseinspector.eurooddsInspector import EuroOddsInspector
 from sportsbook.spiders.sportsbook_config import SportsbookConfiguration
 
@@ -20,6 +21,7 @@ class Win007(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(Win007, self).__init__(*args, **kwargs)
+        # how to get singals from crawler of a spider
         # sig = SignalManager(scrapy.crawler.signals)
         # sig = SignalManager(scrapy.crawler.signals)
         dispatcher.connect(self.item_scraped, signal=signals.item_scraped)
@@ -33,7 +35,8 @@ class Win007(scrapy.Spider):
         self.analysis_site = SportsbookConfiguration.get_analysis_site()
         self.season_url = SportsbookConfiguration.get_season_round_url()\
             .replace('$1', SportsbookConfiguration.get_current_season())
-        # self.start_urls.append(str(self.season_url).replace('$2', str(self.current_round)))
+
+        # how to iterate int numbers
         # for r in range int(str(SportsbookConfiguration.get_round_total()))
 
     def start_requests(self):
@@ -44,11 +47,13 @@ class Win007(scrapy.Spider):
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')
         match_array = match_bloc.split(";")
+        filtered_matches = list(map(str.strip, match_array))
+        filtered_matches = filter(None, filtered_matches)
 
-        for index, m in enumerate(match_array):
+        for index, m in enumerate(filtered_matches):
             match_id = self.extract_match_id(m)
-            # the last two entries 30 and 31 are empty.
-            if index < 30 and (not match_id):
+            print str(index) + ' : ' + match_id
+            if not match_id:
                 print response.url + "match has no id"
                 continue
             e_odds_url = self.e_odds_site.replace("$matchId", str(match_id)).encode("UTF-8")
@@ -59,7 +64,8 @@ class Win007(scrapy.Spider):
                                                meta={'scrapy_instance': scrapy,
                                                      'asian_odds_link': a_odds_url,
                                                      'analysis_link': analysis_url,
-                                                     'current_round': self.current_round})
+                                                     'current_round': self.current_round,
+                                                     'total_matches': len(filtered_matches)})
             yield request_euro_odds
 
     # extract 851540 out of oddsData["O_851540"]=[[97,1.35,4.8,8], ...]]
@@ -82,5 +88,4 @@ class Win007(scrapy.Spider):
 
     def item_scraped(self, item, response, spider):
         self.counter += 1
-            # i need to call the processDetails function here for the next itemID
-            # and the process needs to contine till the itemID finishes
+

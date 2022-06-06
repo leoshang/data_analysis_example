@@ -57,12 +57,14 @@ class AsianOddsInspector:
         odds_array = response.meta.get("euro_odds_array")
         analysis_link = response.meta.get("analysis_link")
         scrapy_instance = response.meta.get("scrapy_instance")
+        total_matches = response.meta.get('total_matches')
         for x in odds_array:
             # append asian_odds into euro_odds
             x.update(asian_odds)
 
         request_analysis = scrapy_instance.Request(analysis_link,
                                                    callback=self.analysis_inspector.extract,
-                                                   meta={'odds_array': odds_array})
+                                                   meta={'odds_array': odds_array,
+                                                         'total_matches': total_matches})
         yield request_analysis
     pass
