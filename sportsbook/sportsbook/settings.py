@@ -22,12 +22,12 @@ NEWSPIDER_MODULE = 'sportsbook.spiders'
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100101 Firefox/44.0"
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
-CONCURRENT_ITEMS = 1
-CONCURRENT_REQUESTS_PER_DOMAIN = 1
+# CONCURRENT_REQUESTS = 1
+# CONCURRENT_ITEMS = 1
+# CONCURRENT_REQUESTS_PER_DOMAIN = 1
 
 DEFAULT_REQUEST_HEADERS = {
    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',

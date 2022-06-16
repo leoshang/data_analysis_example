@@ -25,7 +25,7 @@ class EuroOddsInspector:
         scrapy_instance = response.meta.get("scrapy_instance")
         asian_odds_link = response.meta.get("asian_odds_link")
         analysis_link = response.meta.get("analysis_link")
-
+        current_round = response.meta.get('current_round')
         odds_array = []
         fixture_fields = {}
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
@@ -37,6 +37,7 @@ class EuroOddsInspector:
 
         for x in odds_array:
             x['season'] = SportsbookConfiguration.get_current_season()
+            x['round'] = current_round
             x['crawling_link'] = asian_odds_link
             x.update(fixture_fields)
 

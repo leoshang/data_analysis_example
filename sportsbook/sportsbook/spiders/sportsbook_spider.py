@@ -36,6 +36,8 @@ class Win007(scrapy.Spider):
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')
         match_array = match_bloc.split(";")
+        round_splitor = response.url.split("round=")
+        current_round = round_splitor[1]
 
         filtered_matches = list(map(str.strip, match_array))
         filtered_matches = filter(None, filtered_matches)
@@ -52,7 +54,8 @@ class Win007(scrapy.Spider):
                                                callback=self.euro_odds_inspector.extract_euro_odds,
                                                meta={'scrapy_instance': scrapy,
                                                      'asian_odds_link': a_odds_url,
-                                                     'analysis_link': analysis_url})
+                                                     'analysis_link': analysis_url,
+                                                     'current_round': current_round})
             yield request_euro_odds
 
     # extract 851540 out of oddsData["O_851540"]=[[97,1.35,4.8,8], ...]]
