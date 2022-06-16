@@ -9,7 +9,6 @@ class AnalysisInspector:
     counter = 0
 
     def __init__(self):
-        self.item_export = []
         self.home_table_bgcolor = "//table[@bgcolor='#E6CF9F'][1]"
         self.guest_table_bgcolor = "//table[@bgcolor='#B0D2E3'][1]"
         self.first_table = "/table[1]"
@@ -83,7 +82,6 @@ class AnalysisInspector:
 
     def extract(self, response):
         odds_array = response.meta.get("odds_array")
-        total_matches = response.meta.get('total_matches')
         # season = odds_array[0]['season'].split('-')[0]
         target_html_nodes = self.init_xpath(response)
         analysis = {}
@@ -98,17 +96,7 @@ class AnalysisInspector:
             analysis[self.node_keymap[node]] = node_value
         for x in odds_array:
             # append asian_odds into euro_odds
-            current_round = x['round']
-            # remove the last chinese weekday
-            tmp = x['match_time'].split('星')
-            x['match_time'] = tmp[0]
             x.update(analysis)
-            # yield x
-            self.item_export.append(x)
+            yield x
 
-        if total_matches == len(self.item_export):
-            print str(total_matches) + ' matches of round ' + str(current_round) \
-                  + ' are processed. Now export all items'
-            for item in self.item_export:
-                yield item
         pass

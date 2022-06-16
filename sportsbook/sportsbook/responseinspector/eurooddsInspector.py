@@ -25,8 +25,7 @@ class EuroOddsInspector:
         scrapy_instance = response.meta.get("scrapy_instance")
         asian_odds_link = response.meta.get("asian_odds_link")
         analysis_link = response.meta.get("analysis_link")
-        current_round = response.meta.get('current_round')
-        total_matches = response.meta.get('total_matches')
+
         odds_array = []
         fixture_fields = {}
         all_odds_oneline = re.sub(r'\r\n', '', all_odds)
@@ -35,20 +34,17 @@ class EuroOddsInspector:
         # for each var, filter the desired and populate it to match item
         for v in var_list:
             self.populate(v, fixture_fields, odds_array)
-        print 'bookie total: ' + str(len(odds_array))
 
         for x in odds_array:
             x['season'] = SportsbookConfiguration.get_current_season()
             x['crawling_link'] = asian_odds_link
-            x['round'] = current_round
             x.update(fixture_fields)
 
         request_asia_odds = scrapy_instance.Request(asian_odds_link,
                                                     callback=self.asia_odds_inspector.extract_asian_odds,
                                                     meta={'euro_odds_array': odds_array,
                                                           'analysis_link': analysis_link,
-                                                          'scrapy_instance': scrapy_instance,
-                                                          'total_matches': total_matches})
+                                                          'scrapy_instance': scrapy_instance})
         yield request_asia_odds
 
     def populate(self, js_record, fixture_fields, odds_array):
