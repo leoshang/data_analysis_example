@@ -43,6 +43,8 @@ DEFAULT_REQUEST_HEADERS = {
 # AUTOTHROTTLE_START_DELAY = 3
 # AUTOTHROTTLE_MAX_DELAY = 10
 
+RETRY_TIMES = 10
+
 SPIDER_MIDDLEWARES = {
     'scrapy.spidermiddlewares.referer.RefererMiddleware': True
     # 'sportsbook.middlewares.SportsbookDownloaderMiddleware': 888
