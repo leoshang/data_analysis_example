@@ -39,7 +39,10 @@ class Win007(scrapy.Spider):
     def start_requests(self):
         for r in range(int(str(SportsbookConfiguration.get_round_total()))):
             current_round_url = str(self.season_url).replace('$2', str(r+1))
-            request = scrapy.Request(current_round_url, callback=self.parse, priority=(r*30))
+            # The priority is used by the scheduler to define the order used to process requests.
+            # Requests with a higher priority value will execute earlier.
+            # Negative values are allowed in order to indicate relatively low-priority.
+            request = scrapy.Request(current_round_url, callback=self.parse, priority=-r*30)
             yield request
 
     def parse(self, response):
@@ -61,7 +64,7 @@ class Win007(scrapy.Spider):
             analysis_url = self.analysis_site.replace("$matchId", str(match_id)).encode("UTF-8")
             request_euro_odds = scrapy.Request(e_odds_url,
                                                callback=self.euro_odds_inspector.extract_euro_odds,
-                                               priority=(int(current_round)-1)*30+(index+1),
+                                               priority=(int(current_round)-1)*index+1,
                                                meta={'scrapy_instance': scrapy,
                                                      'asian_odds_link': a_odds_url,
                                                      'analysis_link': analysis_url,

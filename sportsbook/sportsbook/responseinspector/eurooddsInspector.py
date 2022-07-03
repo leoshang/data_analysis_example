@@ -43,7 +43,6 @@ class EuroOddsInspector:
 
         request_asia_odds = scrapy_instance.Request(asian_odds_link,
                                                     callback=self.asia_odds_inspector.extract_asian_odds,
-                                                    priority=int(current_round)+1,
                                                     meta={'euro_odds_array': odds_array,
                                                           'analysis_link': analysis_link,
                                                           'scrapy_instance': scrapy_instance})

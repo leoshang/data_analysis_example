@@ -9,7 +9,7 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'livescore'
+BOT_NAME = 'titan-livescore'
 
 SPIDER_MODULES = ['sportsbook.spiders']
 NEWSPIDER_MODULE = 'sportsbook.spiders'
@@ -25,9 +25,6 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 1
-# CONCURRENT_ITEMS = 1
-# CONCURRENT_REQUESTS_PER_DOMAIN = 1
 
 DEFAULT_REQUEST_HEADERS = {
    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -43,12 +40,13 @@ DEFAULT_REQUEST_HEADERS = {
 # AUTOTHROTTLE_START_DELAY = 3
 # AUTOTHROTTLE_MAX_DELAY = 10
 
-RETRY_TIMES = 10
+RETRY_TIMES = 5
+DEPTH_LIMIT = 3
+# DEPTH_PRIORITY = 1
+# SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
+# SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
+# SCHEDULER_PRIORITY_QUEUE = 'scrapy.pqueues.ScrapyPriorityQueue'
 
-SPIDER_MIDDLEWARES = {
-    'scrapy.spidermiddlewares.referer.RefererMiddleware': True
-    # 'sportsbook.middlewares.SportsbookDownloaderMiddleware': 888
-}
 
 FILES_STORE = "/Users/leishang/helenstreet/python/sportsbook/output/odds_history/csv/"
 IMAGES_STORE = "/Users/leishang/helenstreet/python/sportsbook/output/image_download/"
@@ -88,7 +86,7 @@ FIELDS_TO_EXPORT = [
 # See also autothrottle settings and docs
 # DOWNLOAD_DELAY=3
 # The download delay setting will honor only one of:
-# CONCURRENT_REQUESTS_PER_DOMAIN=16
+CONCURRENT_REQUESTS_PER_DOMAIN=3
 # CONCURRENT_REQUESTS_PER_IP=16
 
 # Disable cookies (enabled by default)
@@ -99,9 +97,14 @@ TELNETCONSOLE_ENABLED = False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'sportsbook.middlewares.MyCustomDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'sportsbook.middlewares.TitanRetryMiddleware': 543
+}
+
+SPIDER_MIDDLEWARES = {
+    'sportsbook.middlewares.TitanRetryMiddleware': 543
+}
+
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
