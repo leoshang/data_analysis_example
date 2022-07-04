@@ -96,10 +96,6 @@ class AnalysisInspector:
             analysis[self.node_keymap[node]] = node_value
         for x in odds_array:
             # append asian_odds into euro_odds
-            # remove the last chinese weekday
-            if hasattr(x, 'match_time'):
-                tmp = x['match_time'].split('星')
-                x['match_time'] = tmp[0]
             x.update(analysis)
             yield x
 
