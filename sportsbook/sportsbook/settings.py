@@ -34,7 +34,7 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 # for retry: https://stackoverflow.com/questions/28640102/retrying-a-scrapy-request-even-when-receiving-a-200-status-code
-RETRY_TIMES = 5
+RETRY_TIMES = 10
 DEPTH_LIMIT = 3
 
 DOWNLOADER_MIDDLEWARES = {
@@ -113,7 +113,7 @@ TELNETCONSOLE_ENABLED = False
 
 # https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy
 # default 0.25  # 250 ms of delay
-# DOWNLOAD_DELAY = 10
+# DOWNLOAD_DELAY = 0.75
 
 # If you set 1 for both start and max delay, it will wait 1 second in each request.
 # AUTOTHROTTLE_ENABLED = True
