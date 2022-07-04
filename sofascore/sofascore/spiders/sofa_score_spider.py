@@ -31,10 +31,12 @@ class SofaScoreCrawler(scrapy.Spider):
         # print response.request.headers['User-Agent']
         # print response.request.headers.get('Referrer', None)
 
-        all_match_data = json.loads(response.body.encode(_UTF_8_))
+        all_match_data = json.loads(response.body, _UTF_8_)
         data1_array = all_match_data['events']
 
         for match in data1_array:
+            if match.get('status').get('type').__eq__('postponed'):
+                continue
             score_item = SofascoreItem()
             # print json.dumps(match)
             score_item['round'] = match['roundInfo']['round']
@@ -45,12 +47,12 @@ class SofaScoreCrawler(scrapy.Spider):
             # print match['tournament']['name']
             # print match['slug']
             if match['homeScore']:
-                score_item['hometeam_score'] = match['homeScore']['normaltime']
+                score_item['hometeam_score'] = match['homeScore'].get('normaltime')
             else:
                 print str(match['id']) + ':' + str(match['roundInfo']['round'])\
                       + ':' + match['homeTeam']['name'] + ':' + match['awayTeam']['name']
             if match['awayScore']:
-                score_item['guestteam_score'] = match['awayScore']['normaltime']
+                score_item['guestteam_score'] = match['awayScore'].get('normaltime')
 
             score_item['guestteam'] = match['awayTeam']['name']
             score_item['guestteam_fans'] = match['awayTeam']['userCount']
