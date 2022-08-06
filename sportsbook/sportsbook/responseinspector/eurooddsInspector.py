@@ -24,6 +24,7 @@ class EuroOddsInspector:
         all_odds = response.text.encode(_UTF_8_)
         scrapy_instance = response.meta.get("scrapy_instance")
         asian_odds_link = response.meta.get("asian_odds_link")
+        asian_goal_link = response.meta.get("asian_goal_link")
         analysis_link = response.meta.get("analysis_link")
         current_round = response.meta.get('current_round')
         odds_array = []
@@ -44,6 +45,7 @@ class EuroOddsInspector:
         request_asia_odds = scrapy_instance.Request(asian_odds_link,
                                                     callback=self.asia_odds_inspector.extract_asian_odds,
                                                     meta={'euro_odds_array': odds_array,
+                                                          'asian_goal_link': asian_goal_link,
                                                           'analysis_link': analysis_link,
                                                           'scrapy_instance': scrapy_instance})
         yield request_asia_odds

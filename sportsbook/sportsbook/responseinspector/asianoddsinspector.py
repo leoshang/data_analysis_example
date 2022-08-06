@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from sportsbook.responseinspector.analysisinspector import AnalysisInspector
+from sportsbook.responseinspector.asiangoalinspector import AsianGoalsInspector
 
 _UTF_8_ = "utf-8"
 
@@ -42,7 +42,7 @@ class AsianOddsInspector:
         self.target_html_nodes = [self.MATCH_TIME_PATH, self.ODDS_BOOKIE_PATH,
                                   self.START_HOME_WAGER_PATH, self.START_HANDICAP_PATH, self.START_GUEST_WAGER_PATH,
                                   self.END_HOME_WAGER_PATH, self.END_HANDICAP_PATH, self.END_GUEST_WAGER_PATH]
-        self.analysis_inspector = AnalysisInspector()
+        self.asian_goal_inspector = AsianGoalsInspector()
         pass
 
     def extract_asian_odds(self, response):
@@ -55,14 +55,18 @@ class AsianOddsInspector:
                 asian_odds[self.asian_odds_fields[node]] = node_value
         # print asian_odds
         odds_array = response.meta.get("euro_odds_array")
+        asian_goal_link = response.meta.get("asian_goal_link")
         analysis_link = response.meta.get("analysis_link")
         scrapy_instance = response.meta.get("scrapy_instance")
         for x in odds_array:
             # append asian_odds into euro_odds
             x.update(asian_odds)
 
-        request_analysis = scrapy_instance.Request(analysis_link,
-                                                   callback=self.analysis_inspector.extract,
-                                                   meta={'odds_array': odds_array})
+        request_analysis = scrapy_instance.Request(asian_goal_link,
+                                                   callback=self.asian_goal_inspector.extract_asian_goal,
+                                                   meta={'odds_array': odds_array,
+                                                         'analysis_link': analysis_link,
+                                                         'scrapy_instance': scrapy_instance
+                                                         })
         yield request_analysis
     pass

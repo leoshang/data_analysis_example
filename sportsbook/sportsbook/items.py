@@ -21,9 +21,17 @@ class EuroOdds(scrapy.Item):
     round = scrapy.Field()
     match_time = scrapy.Field()
 
+    # 菠菜机构
+    bookie_id = scrapy.Field()
+    bookie_name_en = scrapy.Field()
+    bookie_name_cn = scrapy.Field()
+
+    # 主队
     hometeam = scrapy.Field()
     hometeam_cn = scrapy.Field()
     hometeam_id = scrapy.Field()
+
+    # 主队基本面
     home_points = scrapy.Field()
     home_ranking = scrapy.Field()
     home_win_ratio = scrapy.Field()
@@ -31,9 +39,12 @@ class EuroOdds(scrapy.Item):
     home_draw_of_last_6match = scrapy.Field()
     home_lost_of_last_6match = scrapy.Field()
 
+    # 客队
     guestteam = scrapy.Field()
     guestteam_cn = scrapy.Field()
     guestteam_id = scrapy.Field()
+
+    # 客队基本面
     guest_points = scrapy.Field()
     guest_ranking = scrapy.Field()
     guest_win_ratio = scrapy.Field()
@@ -41,33 +52,38 @@ class EuroOdds(scrapy.Item):
     guest_draw_of_last_6match = scrapy.Field()
     guest_lost_of_last_6match = scrapy.Field()
 
-    bookie_id = scrapy.Field()
-    bookie_name_en = scrapy.Field()
-    bookie_name_cn = scrapy.Field()
-
+    # 欧盘胜负平赔率
     open_home_win = scrapy.Field()
     open_draw = scrapy.Field()
     open_guest_win = scrapy.Field()
-
     end_home_win = scrapy.Field()
     end_draw = scrapy.Field()
     end_guest_win = scrapy.Field()
 
+    # 欧盘赔付概率
     open_home_prob = scrapy.Field()
     open_draw_prob = scrapy.Field()
     open_guest_prob = scrapy.Field()
-
     end_home_win_prob = scrapy.Field()
     end_draw_prob = scrapy.Field()
     end_guest_win_prob = scrapy.Field()
 
     asian_bookie = scrapy.Field()
+    # 亚盘让球
     asian_start_homewager = scrapy.Field()
     asian_start_handicap = scrapy.Field()
     asian_start_guestwager = scrapy.Field()
     asian_end_homewager = scrapy.Field()
     asian_end_handicap = scrapy.Field()
     asian_end_guestwager = scrapy.Field()
+
+    # 亚盘大小球
+    asian_start_more_goal = scrapy.Field()
+    asian_start_goal_total = scrapy.Field()
+    asian_start_less_goal = scrapy.Field()
+    asian_end_more_goal = scrapy.Field()
+    asian_end_goal_total = scrapy.Field()
+    asian_end_less_goal = scrapy.Field()
 
     def __setitem__(self, key, value):
         self.__dict__[key] = value

@@ -98,27 +98,33 @@ class Win007XslxExportPipeline(object):
         self.worksheet.write(self.row_count, 24, '初盘主胜赔付'.encode('utf-8'))
         self.worksheet.write(self.row_count, 25, '初盘平局赔付'.encode('utf-8'))
         self.worksheet.write(self.row_count, 26, '初盘客胜赔付'.encode('utf-8'))
-
         self.worksheet.write(self.row_count, 27, '即时终盘主胜赔付'.encode('utf-8'))
         self.worksheet.write(self.row_count, 28, '即时终盘平局赔付'.encode('utf-8'))
         self.worksheet.write(self.row_count, 29, '即时终盘客胜赔付'.encode('utf-8'))
 
-        self.worksheet.write(self.row_count, 30, '初盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 31, '初盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 32, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 30, '亚盘公司'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 31, '初盘主队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 32, '初盘盘口'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 33, '初盘客队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 34, '即时主队水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 35, '即时盘口'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 36, '即时客队水位'.encode('utf-8'))
 
-        self.worksheet.write(self.row_count, 33, '即时终盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 34, '即时终盘平局概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 35, '即时终盘客胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 37, '初盘大球水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 38, '初盘进球数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 39, '初盘小球水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 40, '即时大球水位'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 41, '即时进球数'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 42, '即时小球水位'.encode('utf-8'))
 
-        self.worksheet.write(self.row_count, 36, '亚盘公司'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 37, '初盘主队水位'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 38, '初盘盘口'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 39, '初盘客队水位'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 40, '即时主队水位'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 41, '即时盘口'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 42, '即时客队水位'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 43, 'Crawl Link'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 43, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 44, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 45, '初盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 46, '即时终盘主胜概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 47, '即时终盘平局概率'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 48, '即时终盘客胜概率'.encode('utf-8'))
+
+        self.worksheet.write(self.row_count, 49, 'Crawl Link'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -141,6 +147,8 @@ class Win007XslxExportPipeline(object):
             self.worksheet.write(self.row_count, 5, item['hometeam'])
         if hasattr(item, 'hometeam_cn'):
             self.worksheet.write(self.row_count, 6, item['hometeam_cn'])
+
+        # 主队基本面
         if hasattr(item, 'home_points'):
             self.worksheet.write(self.row_count, 7, item['home_points'])
         if hasattr(item, 'home_ranking'):
@@ -158,6 +166,8 @@ class Win007XslxExportPipeline(object):
             self.worksheet.write(self.row_count, 13, item['guestteam'])
         if hasattr(item, 'guestteam_cn'):
             self.worksheet.write(self.row_count, 14, item['guestteam_cn'])
+
+        # 客队基本面
         if hasattr(item, 'guest_points'):
             self.worksheet.write(self.row_count, 15, item['guest_points'])
         if hasattr(item, 'guest_ranking'):
@@ -178,13 +188,13 @@ class Win007XslxExportPipeline(object):
         if hasattr(item, 'bookie_name_cn'):
             self.worksheet.write(self.row_count, 23, item['bookie_name_cn'])
 
+        # 欧盘胜平负的赔率
         if hasattr(item, 'open_home_win'):
             self.worksheet.write(self.row_count, 24, item['open_home_win'])
         if hasattr(item, 'open_draw'):
             self.worksheet.write(self.row_count, 25, item['open_draw'])
         if hasattr(item, 'open_guest_win'):
             self.worksheet.write(self.row_count, 26, item['open_guest_win'])
-
         if hasattr(item, 'end_home_win'):
             self.worksheet.write(self.row_count, 27, item['end_home_win'])
         if hasattr(item, 'end_draw'):
@@ -192,35 +202,52 @@ class Win007XslxExportPipeline(object):
         if hasattr(item, 'end_guest_win'):
             self.worksheet.write(self.row_count, 29, item['end_guest_win'])
 
+        # 亚盘让球水位
+        if hasattr(item, 'asian_bookie'):
+            self.worksheet.write(self.row_count, 30, item['asian_bookie'])
+        if hasattr(item, 'asian_start_homewager'):
+            self.worksheet.write(self.row_count, 31, item['asian_start_homewager'])
+        if hasattr(item, 'asian_start_handicap'):
+            self.worksheet.write(self.row_count, 32, item['asian_start_handicap'])
+        if hasattr(item, 'asian_start_guestwager'):
+            self.worksheet.write(self.row_count, 33, item['asian_start_guestwager'])
+        if hasattr(item, 'asian_end_homewager'):
+            self.worksheet.write(self.row_count, 34, item['asian_end_homewager'])
+        if hasattr(item, 'asian_end_handicap'):
+            self.worksheet.write(self.row_count, 35, item['asian_end_handicap'])
+        if hasattr(item, 'asian_end_guestwager'):
+            self.worksheet.write(self.row_count, 36, item['asian_end_guestwager'])
+
+        # 亚盘大小球水位
+        if hasattr(item, 'asian_start_more_goal'):
+            self.worksheet.write(self.row_count, 37, item['asian_start_more_goal'])
+        if hasattr(item, 'asian_start_goal_total'):
+            self.worksheet.write(self.row_count, 38, item['asian_start_goal_total'])
+        if hasattr(item, 'asian_start_less_goal'):
+            self.worksheet.write(self.row_count, 39, item['asian_start_less_goal'])
+        if hasattr(item, 'asian_end_more_goal'):
+            self.worksheet.write(self.row_count, 40, item['asian_end_more_goal'])
+        if hasattr(item, 'asian_end_goal_total'):
+            self.worksheet.write(self.row_count, 41, item['asian_end_goal_total'])
+        if hasattr(item, 'asian_end_less_goal'):
+            self.worksheet.write(self.row_count, 42, item['asian_end_less_goal'])
+
+        # 欧盘赔付导出的概率
         if hasattr(item, 'open_home_prob'):
-            self.worksheet.write(self.row_count, 30, item['open_home_prob'])
+            self.worksheet.write(self.row_count, 43, item['open_home_prob'])
         if hasattr(item, 'open_draw_prob'):
-            self.worksheet.write(self.row_count, 31, item['open_draw_prob'])
+            self.worksheet.write(self.row_count, 44, item['open_draw_prob'])
         if hasattr(item, 'open_guest_prob'):
-            self.worksheet.write(self.row_count, 32, item['open_guest_prob'])
+            self.worksheet.write(self.row_count, 45, item['open_guest_prob'])
 
         if hasattr(item, 'end_home_win_prob'):
-            self.worksheet.write(self.row_count, 33, item['end_home_win_prob'])
+            self.worksheet.write(self.row_count, 46, item['end_home_win_prob'])
         if hasattr(item, 'end_draw_prob'):
-            self.worksheet.write(self.row_count, 34, item['end_draw_prob'])
+            self.worksheet.write(self.row_count, 47, item['end_draw_prob'])
         if hasattr(item, 'end_guest_win_prob'):
-            self.worksheet.write(self.row_count, 35, item['end_guest_win_prob'])
+            self.worksheet.write(self.row_count, 48, item['end_guest_win_prob'])
 
-        if hasattr(item, 'asian_bookie'):
-            self.worksheet.write(self.row_count, 36, item['asian_bookie'])
-        if hasattr(item, 'asian_start_homewager'):
-            self.worksheet.write(self.row_count, 37, item['asian_start_homewager'])
-        if hasattr(item, 'asian_start_handicap'):
-            self.worksheet.write(self.row_count, 38, item['asian_start_handicap'])
-        if hasattr(item, 'asian_start_guestwager'):
-            self.worksheet.write(self.row_count, 39, item['asian_start_guestwager'])
-        if hasattr(item, 'asian_end_homewager'):
-            self.worksheet.write(self.row_count, 40, item['asian_end_homewager'])
-        if hasattr(item, 'asian_end_handicap'):
-            self.worksheet.write(self.row_count, 41, item['asian_end_handicap'])
-        if hasattr(item, 'asian_end_guestwager'):
-            self.worksheet.write(self.row_count, 42, item['asian_end_guestwager'])
-        self.worksheet.write(self.row_count, 43, item['crawling_link'])
+        self.worksheet.write(self.row_count, 49, item['crawling_link'])
 
         self.row_count += 1
         return item

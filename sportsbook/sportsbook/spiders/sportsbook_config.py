@@ -48,6 +48,10 @@ class SportsbookConfiguration:
         return SportsbookConfiguration.config_section_map('League')['asian_odds_site']
 
     @staticmethod
+    def get_asian_goal_site():
+        return SportsbookConfiguration.config_section_map('League')['asian_goal_site']
+
+    @staticmethod
     def get_analysis_site():
         return SportsbookConfiguration.config_section_map('League')['analysis_site']
 

@@ -35,7 +35,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 # for retry: https://stackoverflow.com/questions/28640102/retrying-a-scrapy-request-even-when-receiving-a-200-status-code
 RETRY_TIMES = 10
-DEPTH_LIMIT = 3
+DEPTH_LIMIT = 5
 
 DOWNLOADER_MIDDLEWARES = {
     'sportsbook.middlewares.TitanRetryMiddleware': 543
