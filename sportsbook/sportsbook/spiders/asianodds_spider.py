@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
+
+import re
+
 import scrapy
 import time
 from scrapy.crawler import signals
@@ -20,53 +23,25 @@ class Win007(scrapy.Spider):
         dispatcher.connect(self.item_scraped, signal=signals.item_scraped)
         dispatcher.connect(self.spider_closed, signal=signals.spider_closed)
         self.counter = 0
-        self.start_urls = SportsbookConfiguration.get_all_asian_links()
+        self.asian_odds_dict = {}
+        self.start_urls = SportsbookConfiguration.get_all_asian_links().split(',')
         self.asian_odds_inspector = AsianOddsInspector()
         print(self.start_urls)
 
     def start_requests(self):
         for r in self.start_urls:
-            request = scrapy.Request(r, callback=self.parse, priority=-r*30)
+            asian_odds_url = re.sub(r"[\\\n\t\s]*", "", r)
+            request = scrapy.Request(asian_odds_url, callback=self.parse)
             yield request
 
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')
-        self.asian_odds_inspector.extract_euro_odds
-        filtered_matches = list(map(str.strip, match_array))
-        filtered_matches = filter(None, filtered_matches)
-
-        for index, m in enumerate(filtered_matches):
-            match_id = self.extract_match_id(m)
-            if not match_id:
-                print response.url + "match has no id"
-                continue
-            e_odds_url = self.e_odds_site.replace("$matchId", str(match_id)).encode("UTF-8")
-            a_odds_url = self.a_odds_site.replace("$matchId", str(match_id)).encode("UTF-8")
-            a_goal_url = self.a_goal_site.replace("$matchId", str(match_id)).encode("UTF-8")
-            analysis_url = self.analysis_site.replace("$matchId", str(match_id)).encode("UTF-8")
-            request_euro_odds = scrapy.Request(e_odds_url,
-                                               callback=self.asian_odds_inspector.extract_euro_odds,
-                                               priority=(int(current_round)-1)*index+1,
-                                               meta={'scrapy_instance': scrapy,
-                                                     'asian_odds_link': a_odds_url,
-                                                     'asian_goal_link': a_goal_url,
-                                                     'analysis_link': analysis_url,
-                                                     'current_round': current_round})
-            yield request_euro_odds
-
-    # extract 851540 out of oddsData["O_851540"]=[[97,1.35,4.8,8], ...]]
-    def extract_match_id(self, m):
-        if not m or len(m) < 1 or ("=" not in m):
-            return None
-        m_array = m.split("=")
-        # print m_array[0]
-        tmp = m_array[0].replace("\"]", "")
-        # print tmp
-        id_array = tmp.split("_")
-        if id_array and len(id_array) > 1:
-            return id_array[1]
+        asian_odds = self.asian_odds_inspector.handle_asian_odds(response)
+        if asian_odds['asian_start_handicap'] in self.asian_odds_dict:
+            self.asian_odds_dict[asian_odds['asian_start_handicap']].append(asian_odds)
         else:
-            return None
+            self.asian_odds_dict[asian_odds['asian_start_handicap']] = [asian_odds]
+        print asian_odds
 
     def spider_closed(self, spider):
         print 'spider crawled ' + str(self.counter) + ' items'

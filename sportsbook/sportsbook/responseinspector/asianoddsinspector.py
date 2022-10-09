@@ -45,6 +45,15 @@ class AsianOddsInspector:
         self.asian_goal_inspector = AsianGoalsInspector()
         pass
 
+    def handle_asian_odds(self, response):
+        asian_odds = {}
+        for node in self.target_html_nodes:
+            node_text = response.xpath(node).get()
+            if node_text:
+                node_value = node_text.encode(_UTF_8_)
+                asian_odds[self.asian_odds_fields[node]] = node_value
+        return asian_odds
+
     def extract_asian_odds(self, response):
         # all_odds = response.text.encode(_UTF_8_)
         asian_odds = {}
