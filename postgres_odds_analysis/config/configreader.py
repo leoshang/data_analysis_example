@@ -43,6 +43,10 @@ class ConfigurationReader:
         return ConfigurationReader.config_section_map('League')['suffix']
 
     @staticmethod
+    def get_analyse_prefix():
+        return ConfigurationReader.config_section_map('League')['analyseprefix']
+
+    @staticmethod
     def get_data_file():
         return ConfigurationReader.get_location() + ConfigurationReader.get_league_name() + \
                ConfigurationReader.get_season() + ConfigurationReader.get_suffix()
