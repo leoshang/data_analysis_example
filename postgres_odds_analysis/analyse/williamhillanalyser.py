@@ -119,8 +119,11 @@ class WilliamOddsAnalyser(object):
     def write(self, handicap_dict):
         self.write_header()
         for key in sorted(handicap_dict):
-            for euro_odds in handicap_dict[key]:
+            odds = handicap_dict[key]
+            for euro_odds in sorted(odds):
                 self.do_write(euro_odds)
+            # self.output_sheet.insert_rows(self.row_count)
+            # self.row_count += 1
 
     def do_write(self, odd):
         handicap = self.handicap_map_rev[odd['asian_start_handicap']]

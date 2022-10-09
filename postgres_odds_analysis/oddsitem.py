@@ -64,4 +64,10 @@ class EuroOdds(scrapy.Item):
     def __str__(self):
         return str(self.__dict__)
 
+    def __eq__(self, o):
+        return self.__dict__ == o.__dict__
+
+    def __lt__(self, other):
+        return self.open_draw < other.open_draw
+
 
