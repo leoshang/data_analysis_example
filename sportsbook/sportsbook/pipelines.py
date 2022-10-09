@@ -117,14 +117,14 @@ class Win007XslxExportPipeline(object):
         self.worksheet.write(self.row_count, 41, '即时进球数'.encode('utf-8'))
         self.worksheet.write(self.row_count, 42, '即时小球水位'.encode('utf-8'))
 
-        self.worksheet.write(self.row_count, 43, '初盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 44, '初盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 45, '初盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 46, '即时终盘主胜概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 47, '即时终盘平局概率'.encode('utf-8'))
-        self.worksheet.write(self.row_count, 48, '即时终盘客胜概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 43, '初盘主胜概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 44, '初盘主胜概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 45, '初盘主胜概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 46, '即时终盘主胜概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 47, '即时终盘平局概率'.encode('utf-8'))
+        #self.worksheet.write(self.row_count, 48, '即时终盘客胜概率'.encode('utf-8'))
 
-        self.worksheet.write(self.row_count, 49, 'Crawl Link'.encode('utf-8'))
+        self.worksheet.write(self.row_count, 43, 'Crawl Link'.encode('utf-8'))
         self.row_count += 1
 
     def spider_closed(self, spider):
@@ -231,23 +231,7 @@ class Win007XslxExportPipeline(object):
             self.worksheet.write(self.row_count, 41, item['asian_end_goal_total'])
         if hasattr(item, 'asian_end_less_goal'):
             self.worksheet.write(self.row_count, 42, item['asian_end_less_goal'])
-
-        # 欧盘赔付导出的概率
-        if hasattr(item, 'open_home_prob'):
-            self.worksheet.write(self.row_count, 43, item['open_home_prob'])
-        if hasattr(item, 'open_draw_prob'):
-            self.worksheet.write(self.row_count, 44, item['open_draw_prob'])
-        if hasattr(item, 'open_guest_prob'):
-            self.worksheet.write(self.row_count, 45, item['open_guest_prob'])
-
-        if hasattr(item, 'end_home_win_prob'):
-            self.worksheet.write(self.row_count, 46, item['end_home_win_prob'])
-        if hasattr(item, 'end_draw_prob'):
-            self.worksheet.write(self.row_count, 47, item['end_draw_prob'])
-        if hasattr(item, 'end_guest_win_prob'):
-            self.worksheet.write(self.row_count, 48, item['end_guest_win_prob'])
-
-        self.worksheet.write(self.row_count, 49, item['crawling_link'])
+        self.worksheet.write(self.row_count, 43, item['crawling_link'])
 
         self.row_count += 1
         return item

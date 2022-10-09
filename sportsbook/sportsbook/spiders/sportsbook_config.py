@@ -58,3 +58,7 @@ class SportsbookConfiguration:
     @staticmethod
     def get_current_season():
         return SportsbookConfiguration.config_section_map('League')['current_season']
+
+    @staticmethod
+    def get_all_asian_links():
+        return SportsbookConfiguration.config_section_map('League')['asianoddslink']
