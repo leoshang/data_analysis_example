@@ -20,5 +20,7 @@ if __name__ == '__main__':
     william_analyser = WilliamOddsAnalyser()
     handicap_dict = william_analyser.read_items()
     william_analyser.write(handicap_dict)
+    william_analyser.close_writer()
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
