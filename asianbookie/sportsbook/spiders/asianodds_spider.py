@@ -8,9 +8,8 @@ import time
 from scrapy.crawler import signals
 from pydispatch import dispatcher
 
-from sportsbook.spiders.sportsbook_config import SportsbookConfiguration
-
-from sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
+from asianbookie.sportsbook.spiders.sportsbook_config import SportsbookConfiguration
+from asianbookie.sportsbook.responseinspector.asianoddsinspector import AsianOddsInspector
 
 
 class Win007(scrapy.Spider):
@@ -31,17 +30,22 @@ class Win007(scrapy.Spider):
     def start_requests(self):
         for r in self.start_urls:
             asian_odds_url = re.sub(r"[\\\n\t\s]*", "", r)
-            request = scrapy.Request(asian_odds_url, callback=self.parse)
+            schedule_id = self.retrieve_schedule_id(asian_odds_url)
+            request = scrapy.Request(asian_odds_url, callback=self.parse, meta={'ScheduleID': schedule_id})
             yield request
 
     def parse(self, response):
-        match_bloc = response.body.encode('utf-8')
-        asian_odds = self.asian_odds_inspector.handle_asian_odds(response)
-        if asian_odds['asian_start_handicap'] in self.asian_odds_dict:
-            self.asian_odds_dict[asian_odds['asian_start_handicap']].append(asian_odds)
-        else:
-            self.asian_odds_dict[asian_odds['asian_start_handicap']] = [asian_odds]
-        print asian_odds
+        schedule_id = response.meta.get('ScheduleID')
+        asian_odd = self.asian_odds_inspector.handle_asian_odd(response)
+        asian_odd['schedule_id'] = schedule_id
+        yield asian_odd
+
+    # schedule id is the identifier of the match.
+    def retrieve_schedule_id(self, asian_odds_url):
+        # http: // vip.titan007.com / AsianOdds_n.aspx?id = 851849
+        tmp = asian_odds_url.split("?")
+        tmp = str(tmp[1]).split("=")
+        return tmp[1]
 
     def spider_closed(self, spider):
         print 'spider crawled ' + str(self.counter) + ' items'
