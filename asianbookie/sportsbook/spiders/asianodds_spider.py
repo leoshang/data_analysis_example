@@ -31,7 +31,14 @@ class Win007(scrapy.Spider):
         for r in self.start_urls:
             asian_odds_url = re.sub(r"[\\\n\t\s]*", "", r)
             schedule_id = self.retrieve_schedule_id(asian_odds_url)
-            request = scrapy.Request(asian_odds_url, callback=self.parse, meta={'ScheduleID': schedule_id})
+            request = scrapy.Request(asian_odds_url, callback=self.parse,
+                                     method='GET', headers=None, body=None,
+                                     cookies=None,
+                                     meta={'ScheduleID': schedule_id},
+                                     encoding='gb18030', priority=0,
+                                     dont_filter=False, errback=None, flags=None, cb_kwargs=None
+                                     )
+            # request = request.replace(encoding='gb18030')
             yield request
 
     def parse(self, response):

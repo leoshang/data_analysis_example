@@ -47,6 +47,7 @@ class AsianGoalsInspector:
         request_analysis = scrapy_instance.Request(analysis_link,
                                                    callback=self.analysis_inspector.extract,
                                                    meta={'odds_array': odds_array})
+        request_analysis = request_analysis.replace(encoding='gb18030')
         yield request_analysis
 
     pass

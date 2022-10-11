@@ -1,23 +1,5 @@
-# -*- coding: utf-8 -*-
-from html5lib import html5parser
-
+import cchardet
 from asianbookie.sportsbook.items import AsianOdds
-
-_UTF_8_ = "utf-8"
-
-# div id="webmain"
-# 	table id="odds"
-# 		tbody
-# 			the 第三个tr：tr[3] is 澳门
-# 						1. <td>
-# 							澳门
-# 						   </td>
-# 						3. <td> 初盘主队水位
-# 						4. 初盘盘口
-# 						5. 初盘客队水位
-# 						9. 即时主队水位
-# 						10. 即时盘口
-# 						11.即时客队水位
 
 
 class AsianOddsInspector:
@@ -45,12 +27,10 @@ class AsianOddsInspector:
 
     def handle_asian_odd(self, response):
         asian_odd_item = AsianOdds()
-        if response.encoding == 'cp1252':
-            response = response.encoding('cp1252')
         for node in self.target_html_nodes:
             node_text = response.xpath(node).get()
             if node_text:
-                node_value = node_text.encode(_UTF_8_)
+                node_value = node_text.encode(response.encoding)
                 asian_odd_item[self.asian_odds_fields[node]] = node_value
         return asian_odd_item
     pass

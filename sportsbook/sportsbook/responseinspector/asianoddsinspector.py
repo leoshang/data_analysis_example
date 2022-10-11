@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from html5lib import html5parser
 from sportsbook.responseinspector.asiangoalinspector import AsianGoalsInspector
 
 _UTF_8_ = "utf-8"
+
 
 # div id="webmain"
 # 	table id="odds"
@@ -71,11 +73,13 @@ class AsianOddsInspector:
             # append asian_odds into euro_odds
             x.update(asian_odds)
 
-        request_analysis = scrapy_instance.Request(asian_goal_link,
-                                                   callback=self.asian_goal_inspector.extract_asian_goal,
-                                                   meta={'odds_array': odds_array,
-                                                         'analysis_link': analysis_link,
-                                                         'scrapy_instance': scrapy_instance
-                                                         })
-        yield request_analysis
+        request_goal = scrapy_instance.Request(asian_goal_link,
+                                               callback=self.asian_goal_inspector.extract_asian_goal,
+                                               meta={'odds_array': odds_array,
+                                                     'analysis_link': analysis_link,
+                                                     'scrapy_instance': scrapy_instance
+                                                     })
+        request_goal = request_goal.replace(encoding='gb18030')
+        yield request_goal
+
     pass

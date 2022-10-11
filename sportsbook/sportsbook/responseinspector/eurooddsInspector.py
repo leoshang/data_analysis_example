@@ -48,6 +48,7 @@ class EuroOddsInspector:
                                                           'asian_goal_link': asian_goal_link,
                                                           'analysis_link': analysis_link,
                                                           'scrapy_instance': scrapy_instance})
+        request_asia_odds = request_asia_odds.replace(encoding='gb18030')
         yield request_asia_odds
 
     def populate(self, js_record, fixture_fields, odds_array):

@@ -18,8 +18,19 @@ class TitanRetryMiddleware(BaseRetryMiddleware):
     def process_response(self, request, response, spider):
         if request.meta.get('dont_retry', False):
             return response
-        if len(response.body) == 0:
-            return self._retry(request, "empty_body", spider) or response
+
+        # if response._encoding is None and response._headers_encoding() is not None \
+        #         and response._body_declared_encoding() is not None \
+        #         and response._headers_encoding() != response._body_declared_encoding():
+        #     return response.replace(encoding=response._body_declared_encoding())
+
+        # if len(response.body) < 100:
+        #     if response.encoding == 'utf-8':
+        #         request = request.replace(encoding='gb18030')
+        #     if response.encoding == 'gb18030':
+        #         request = request.replace(encoding='cp1252')
+        #     return self._retry(request, "wrong_encoding", spider) or response
+
         if response.status in self.retry_http_codes:
             reason = super.response_status_message(response.status)
             return self._retry(request, reason, spider) or response
