@@ -37,10 +37,17 @@ class Win007(scrapy.Spider):
             match_url = str(season_url).replace('$2', str(r + 1))
             self.start_urls.append(match_url)
 
+    # def start_requests(self):
+    #     current_round_url = str(self.season_url).replace('$2', str(SportsbookConfiguration.get_current_round()))
+    #     request = scrapy.Request(current_round_url, callback=self.parse)
+    #     yield request
+
     def start_requests(self):
-        current_round_url = str(self.season_url).replace('$2', str(SportsbookConfiguration.get_current_round()))
-        request = scrapy.Request(current_round_url, callback=self.parse)
-        yield request
+        round_range = SportsbookConfiguration.get_round_range().split('-')
+        for r in range(int(round_range[0]), int(round_range[1]) + 1):
+            current_round_url = str(self.season_url).replace('$2', str(r))
+            request = scrapy.Request(current_round_url, callback=self.parse)
+            yield request
 
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')

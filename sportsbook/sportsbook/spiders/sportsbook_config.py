@@ -40,6 +40,10 @@ class SportsbookConfiguration:
         return SportsbookConfiguration.config_section_map('League')['round_total']
 
     @staticmethod
+    def get_round_range():
+        return SportsbookConfiguration.config_section_map('League')['round_range']
+
+    @staticmethod
     def get_league():
         return SportsbookConfiguration.config_section_map('League')['league_name']
 
