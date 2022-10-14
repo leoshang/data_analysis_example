@@ -22,6 +22,9 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP=16
+# https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy
+# default 0.25  # 250 ms of delay
+DOWNLOAD_DELAY = 1
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -108,11 +111,10 @@ TELNETCONSOLE_ENABLED = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY=5
+
 # The download delay setting will honor only one of:
 
-# https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy
-# default 0.25  # 250 ms of delay
+
 # DOWNLOAD_DELAY = 0.75
 
 # If you set 1 for both start and max delay, it will wait 1 second in each request.
