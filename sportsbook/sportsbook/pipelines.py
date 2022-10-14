@@ -56,7 +56,7 @@ class Win007XslxExportPipeline(object):
 
     def spider_opened(self, spider):
         file_prefix = SportsbookConfiguration.get_league() + '-' + SportsbookConfiguration.get_current_season() \
-                      + '-round' + SportsbookConfiguration.get_current_round()
+                      + '-round' + SportsbookConfiguration.get_round_range()
         self.workbook = xlsxwriter.Workbook('%s.xlsx' % file_prefix)
         self.worksheet = self.workbook.add_worksheet()
         self.worksheet.set_default_row(25)
