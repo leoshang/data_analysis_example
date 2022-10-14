@@ -55,18 +55,14 @@ class Win007XslxExportPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        file_prefix = SportsbookConfiguration.get_league() + '-' + SportsbookConfiguration.get_current_season()
+        file_prefix = SportsbookConfiguration.get_league() + '-' + SportsbookConfiguration.get_current_season() \
+                      + '-round' + SportsbookConfiguration.get_current_round()
         self.workbook = xlsxwriter.Workbook('%s.xlsx' % file_prefix)
         self.worksheet = self.workbook.add_worksheet()
         self.worksheet.set_default_row(25)
         self.output_header()
 
     def output_header(self):
-        # self.worksheet.write(self.row_count, 5, self.odds_company_title)
-        # matchday, season, matchname,
-        # hometeam, guestteam,
-        # hometeam_cn, guestteam_cn,
-        # self.row_count += 1
         self.worksheet.write(self.row_count, 0, '赛季'.encode('utf-8'))
         self.worksheet.write(self.row_count, 1, '轮次'.encode('utf-8'))
         self.worksheet.write(self.row_count, 2, '比赛时间'.encode('utf-8'))

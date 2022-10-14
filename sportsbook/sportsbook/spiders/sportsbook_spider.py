@@ -38,13 +38,9 @@ class Win007(scrapy.Spider):
             self.start_urls.append(match_url)
 
     def start_requests(self):
-        for r in range(int(str(SportsbookConfiguration.get_round_total()))):
-            current_round_url = str(self.season_url).replace('$2', str(r+1))
-            # The priority is used by the scheduler to define the order used to process requests.
-            # Requests with a higher priority value will execute earlier.
-            # Negative values are allowed in order to indicate relatively low-priority.
-            request = scrapy.Request(current_round_url, callback=self.parse, priority=-r*30)
-            yield request
+        current_round_url = str(self.season_url).replace('$2', str(SportsbookConfiguration.get_current_round()))
+        request = scrapy.Request(current_round_url, callback=self.parse)
+        yield request
 
     def parse(self, response):
         match_bloc = response.body.encode('utf-8')
