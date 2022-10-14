@@ -108,7 +108,7 @@ TELNETCONSOLE_ENABLED = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY=3
+DOWNLOAD_DELAY=5
 # The download delay setting will honor only one of:
 
 # https://stackoverflow.com/questions/8768439/how-to-give-delay-between-each-requests-in-scrapy

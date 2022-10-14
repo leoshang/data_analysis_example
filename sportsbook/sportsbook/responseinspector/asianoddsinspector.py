@@ -19,9 +19,11 @@ _UTF_8_ = "utf-8"
 # 						10. 即时盘口
 # 						11.即时客队水位
 
-
 class AsianOddsInspector:
     def __init__(self):
+        self.SCORE_PATH_ID = "//div[@id='headVs']"
+        self.HOME_SCORE = self.SCORE_PATH_ID + "//div[@class='score'][1]/text()"
+        self.GUEST_SCORE = self.SCORE_PATH_ID + "//div[@class='score'][2]/text()"
         self.MATCH_TIME_PATH = "//div[@class='vs']/div[@class='row']/a/following-sibling::text()"
         self.ODDS_TABLE_ID = "//table[@id='odds']"
         self.TARGET_SECTION_PATH = self.ODDS_TABLE_ID + "//tr[3]"  # index starts from 1
@@ -32,7 +34,9 @@ class AsianOddsInspector:
         self.END_HOME_WAGER_PATH = self.TARGET_SECTION_PATH + "/td[9]/text()"
         self.END_HANDICAP_PATH = self.TARGET_SECTION_PATH + "/td[10]/text()"
         self.END_GUEST_WAGER_PATH = self.TARGET_SECTION_PATH + "/td[11]/text()"
-        self.asian_odds_fields = {self.MATCH_TIME_PATH: "match_time",
+        self.asian_odds_fields = {self.HOME_SCORE: "home_score",
+                                  self.GUEST_SCORE: "guest_score",
+                                  self.MATCH_TIME_PATH: "match_time",
                                   self.ODDS_BOOKIE_PATH: "asian_bookie",
                                   self.START_HOME_WAGER_PATH: "asian_start_homewager",
                                   self.START_HANDICAP_PATH: "asian_start_handicap",
@@ -41,7 +45,7 @@ class AsianOddsInspector:
                                   self.END_HANDICAP_PATH: "asian_end_handicap",
                                   self.END_GUEST_WAGER_PATH: "asian_end_guestwager"}
 
-        self.target_html_nodes = [self.MATCH_TIME_PATH, self.ODDS_BOOKIE_PATH,
+        self.target_html_nodes = [self.HOME_SCORE, self.GUEST_SCORE, self.MATCH_TIME_PATH, self.ODDS_BOOKIE_PATH,
                                   self.START_HOME_WAGER_PATH, self.START_HANDICAP_PATH, self.START_GUEST_WAGER_PATH,
                                   self.END_HOME_WAGER_PATH, self.END_HANDICAP_PATH, self.END_GUEST_WAGER_PATH]
         self.asian_goal_inspector = AsianGoalsInspector()

@@ -14,22 +14,17 @@ import scrapy
 
 class EuroOdds(scrapy.Item):
     # league name
-    matchname = scrapy.Field()
-    schedule_id = scrapy.Field()
-    match_id = scrapy.Field()
+    scheduleid = scrapy.Field()
     season = scrapy.Field()
     round = scrapy.Field()
     match_time = scrapy.Field()
-
+    home_score = scrapy.Field()
+    guest_score = scrapy.Field()
     # 菠菜机构
-    bookie_id = scrapy.Field()
     bookie_name_en = scrapy.Field()
-    bookie_name_cn = scrapy.Field()
 
     # 主队
     hometeam = scrapy.Field()
-    hometeam_cn = scrapy.Field()
-    hometeam_id = scrapy.Field()
 
     # 主队基本面
     home_points = scrapy.Field()
@@ -41,8 +36,6 @@ class EuroOdds(scrapy.Item):
 
     # 客队
     guestteam = scrapy.Field()
-    guestteam_cn = scrapy.Field()
-    guestteam_id = scrapy.Field()
 
     # 客队基本面
     guest_points = scrapy.Field()
@@ -59,14 +52,6 @@ class EuroOdds(scrapy.Item):
     end_home_win = scrapy.Field()
     end_draw = scrapy.Field()
     end_guest_win = scrapy.Field()
-
-    # 欧盘赔付概率
-    open_home_prob = scrapy.Field()
-    open_draw_prob = scrapy.Field()
-    open_guest_prob = scrapy.Field()
-    end_home_win_prob = scrapy.Field()
-    end_draw_prob = scrapy.Field()
-    end_guest_win_prob = scrapy.Field()
 
     asian_bookie = scrapy.Field()
     # 亚盘让球

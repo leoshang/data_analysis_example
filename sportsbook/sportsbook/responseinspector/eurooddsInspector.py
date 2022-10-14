@@ -14,9 +14,8 @@ _JS_VAR_ = 'var '
 class EuroOddsInspector:
 
     def __init__(self):
-        self.match_fields = ['matchname', 'hometeam', 'hometeamid', 'guestteam', 'guestteamid',
-                             'hometeam_cn', 'guestteam_cn', 'horder', 'gorder']
-        self.institute_list = ['Ladbrokes', 'Oddset', 'William Hill']
+        self.match_fields = ['scheduleid', 'hometeam', 'guestteam', 'horder', 'gorder']
+        self.institute_list = ['William Hill']
         self.asia_odds_inspector = AsianOddsInspector()
         pass
 
