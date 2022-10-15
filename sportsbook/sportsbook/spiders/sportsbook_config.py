@@ -32,10 +32,6 @@ class SportsbookConfiguration:
         return SportsbookConfiguration.config_section_map('League')['season_round_url']
 
     @staticmethod
-    def get_current_round():
-        return SportsbookConfiguration.config_section_map('League')['current_round']
-
-    @staticmethod
     def get_round_total():
         return SportsbookConfiguration.config_section_map('League')['round_total']
 

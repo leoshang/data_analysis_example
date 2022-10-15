@@ -44,8 +44,13 @@ class Win007(scrapy.Spider):
 
     def start_requests(self):
         round_range = SportsbookConfiguration.get_round_range().split('-')
-        for r in range(int(round_range[0]), int(round_range[1]) + 1):
-            current_round_url = str(self.season_url).replace('$2', str(r))
+        if int(round_range[1]) > int(round_range[0]):
+            for r in range(int(round_range[0]), int(round_range[1]) + 1):
+                current_round_url = str(self.season_url).replace('$2', str(r))
+                request = scrapy.Request(current_round_url, callback=self.parse)
+                yield request
+        elif int(round_range[0]) == int(round_range[1]):
+            current_round_url = str(self.season_url).replace('$2', str(round_range[0]))
             request = scrapy.Request(current_round_url, callback=self.parse)
             yield request
 
