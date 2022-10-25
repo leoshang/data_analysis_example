@@ -49,5 +49,5 @@ class ConfigurationReader:
     @staticmethod
     def get_data_file():
         return ConfigurationReader.get_location() + ConfigurationReader.get_league_name() + \
-               ConfigurationReader.get_season() + ConfigurationReader.get_suffix()
+               ConfigurationReader.get_season() + '.' + ConfigurationReader.get_suffix()
 
