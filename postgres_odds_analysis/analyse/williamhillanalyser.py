@@ -18,9 +18,13 @@ class WilliamOddsAnalyser(object):
         self.output_sheet = self.workbook.add_worksheet()
         self.output_sheet.set_default_row(25)
         self.row_count = 0
-        #self.handicap_map = {u'两球': 2, u'球半/两球': 1.75, u'球半': 1.5, u'一球/球半': 1.25, u'一球': 1, u'半球/一球': 0.75, u'半球': 0.5,
-        #                     u'平手/半球': 0.25, u'平手': 0}
-        #self.handicap_map_rev = {2: u'两球', 1.75: u'球半/两球', 1.5: u'球半', 1.25: u'一球/球半', 1: u'一球', 0.75: u'半球/一球',
+        self.handicap_map = {u'三球/三球半': 3.25, u'三球': 3, u'两球半/三球': 2.75, u'两球半': 2.5, u'两球/两球半': 2.25, u'两球': 2,
+                             u'球半/两球': 1.75, u'球半': 1.5, u'一球/球半': 1.25, u'一球': 1,
+                             u'半球/一球': 0.75, u'半球': 0.5, u'平手/半球': 0.25, u'平手': 0,
+                             u'受让平手/半球': -0.25, u'受让半球': -0.5, u'受让半球/一球': -0.75,
+                             u'受让一球': -1, u'受让一球/球半': -1.25, u'受让球半': -1.5, u'受让球半/两球': -1.75,
+                             u'受让两球': -2, u'受让两球/两球半': -2.25, u'受让两球半': -2.5, u'受让两球半/三球': -2.75, u'受让三球': -3}
+        # self.handicap_map_rev = {2: u'两球', 1.75: u'球半/两球', 1.5: u'球半', 1.25: u'一球/球半', 1: u'一球', 0.75: u'半球/一球',
         #                         0.5: u'半球', 0.25: u'平手/半球', 0: u'平手'}
 
     def read_items(self):
@@ -38,12 +42,13 @@ class WilliamOddsAnalyser(object):
 
     def write_header(self):
         self.output_sheet.write(self.row_count, 0, u'盘口')
-        self.output_sheet.write(self.row_count, 1, u'赢平负')
-        self.output_sheet.write(self.row_count, 2, u'赔率')
-        self.output_sheet.write(self.row_count, 3, u'总场次')
-        self.output_sheet.write(self.row_count, 4, u'赢场次')
-        self.output_sheet.write(self.row_count, 5, u'平场次')
-        self.output_sheet.write(self.row_count, 6, u'输场次')
+        self.output_sheet.write(self.row_count, 1, u'Handicap')
+        self.output_sheet.write(self.row_count, 2, u'赢平负')
+        self.output_sheet.write(self.row_count, 3, u'赔率')
+        self.output_sheet.write(self.row_count, 4, u'总场次')
+        self.output_sheet.write(self.row_count, 5, u'赢场次')
+        self.output_sheet.write(self.row_count, 6, u'平场次')
+        self.output_sheet.write(self.row_count, 7, u'输场次')
         self.row_count += 1
 
     def process_items(self, odds_sheet):
@@ -92,6 +97,7 @@ class WilliamOddsAnalyser(object):
 
                 handicap_draw_homewin = euro_odds['asian_start_handicap'] + '_' + euro_odds['open_draw'] + '_' + euro_odds['open_home_win']
 
+                # debug condition: handicap_draw == u'一球/球半_平局赔率_4'
                 if handicap_draw in handicap_dict:
                     current_draw = handicap_dict[handicap_draw]
                     handicap_draw_total = int(current_draw['match_total']) + 1
@@ -185,12 +191,13 @@ class WilliamOddsAnalyser(object):
     def do_write(self, handicap, odd):
         handicap_arr = handicap.split('_')
         self.output_sheet.write(self.row_count, 0, handicap_arr[0])
-        self.output_sheet.write(self.row_count, 1, handicap_arr[1])
-        self.output_sheet.write(self.row_count, 2, handicap_arr[2])
-        self.output_sheet.write(self.row_count, 3, odd['match_total'])
-        self.output_sheet.write(self.row_count, 4, odd['match_wins'])
-        self.output_sheet.write(self.row_count, 5, odd['match_draws'])
-        self.output_sheet.write(self.row_count, 6, odd['match_defeats'])
+        self.output_sheet.write(self.row_count, 1, self.handicap_map[handicap_arr[0]])
+        self.output_sheet.write(self.row_count, 2, handicap_arr[1])
+        self.output_sheet.write(self.row_count, 3, handicap_arr[2])
+        self.output_sheet.write(self.row_count, 4, odd['match_total'])
+        self.output_sheet.write(self.row_count, 5, odd['match_wins'])
+        self.output_sheet.write(self.row_count, 6, odd['match_draws'])
+        self.output_sheet.write(self.row_count, 7, odd['match_defeats'])
 
         self.row_count += 1
 
