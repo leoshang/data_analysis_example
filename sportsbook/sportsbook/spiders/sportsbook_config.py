@@ -1,7 +1,7 @@
 import configparser
 
 _SPORTSBOOK_CONFIG_FILE_ = '/Users/leoshang/workspace/football_data_analysis/sportsbook/' \
-                           'sportsbook/premier-league.ini'
+                           'sportsbook/bundes-league.ini'
 
 data_feed_config = configparser.ConfigParser()
 data_feed_config.read(_SPORTSBOOK_CONFIG_FILE_)
