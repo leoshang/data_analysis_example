@@ -1,0 +1,45 @@
+Head-to-Head Records:
+Home Performance: (For example, a team that has won 5 out of their last 6 home games may not necessarily be in better form than a team that has won 3 out of their last 6 away games.)
+Recent Form:
+Strength of opposition: (For example, a team that has won 6 games in a row against weaker opposition may not necessarily be in better form than a team that has won 4 out of 6 games against stronger opposition.)
+
+
+Time of the season: The time of the season can impact a team's form and motivation, with teams potentially performing better or worse at different stages of the season.
+Importance of matches: 
+	Fixture congestion: The fixture schedule can become congested towards the end of the season due to various cup competitions and rescheduled games. This can lead to increased fatigue and a higher risk of injuries for players, which can impact team performance.
+
+
+	Managerial Changes:
+	Motivation: The motivation of each team can be a significant factor, with teams fighting for survival or pushing for a title potentially playing with more urgency than teams with little to play for.
+	Fatigue: As the season progresses, players may become more fatigued due to the number of games played, leading to a decrease in performance. For example, a team that started the season strongly may struggle to maintain their form towards the end of the season.
+	Injuries and Suspensions
+	Fitness and stamina: Teams that are physically fit and have good stamina can maintain their performance level throughout the match and have a better chance of winning.
+	Team cohesion and morale: Teams that have good team spirit, cohesion, and morale tend to perform better and win more matches.
+
+Bookmakers' adjustments: Bookmakers will adjust the over/under goal line based on the betting patterns and bets they receive
+
+
+we use the plus symbol (+) if the team has the lead by the betting markets.
+
+Betis @1.90 vs Real Madrid @1.90
+You are betting £100 on Betis to win +0.75 Asian handicap. The home team is the underdog. 
+
+Porto @1.85 vs Benfica @2.00
+You are betting £100 on Porto to win -0.5 Asian handicap. We use the minus symbol (-) if the team has the lead by the betting markets.
+
+season  round	host	guest	host_points	guest_points	host_ranking	guest_ranking	主队胜率	客队胜率		host_form guest_form  init_host_win_odds	init_draw_odds	init_guest_win_odds	init_host_water	init_handicap	init_guest_water	final_host_win_odds	final_draw_odds	final_guest_win_odds	final_host_water	final_handicap	final_guest_water		host_score	guest_score
+
+wwwwwww
+
+a list has only six elements, which can only be 'w', 'd', or 'l'
+Each position in the list have its own weight, the first until the third has weight of 1, the fourth has 1.4, the fifth has 1.7, and the last has 2
+The character 'w', 'd', 'l' are mapped to different value, that means w is equal to 3, d is equal to 1,  and l is equal to 0
+The goal is to caclulate the sum of the value of all elements in the list. 
+The way to calculate is simple:  sum all of the item's value multiplying its weight, for example, if the list has ['w','d','l','w','d','l'], the sum is 3 x 1 + 1 x 1  + 0 x 1 + 3 x 1.4 + 1 x 1.7 + 0 x 2  
+But if the list has a continuous identical characters, then the calculation of this sequence has higher prioirty, it means it has to calculate the sum the this sequence and mutiply the result with the weight of the last position of this sequence
+for example  calculating the list ['d','d','l','w','w','w'] is (1 + 1) x1 + 0 x 1 + (3+3+3) x 2 = 20.
+Please figure out a python function for it.
+
+
+
+
