@@ -27,9 +27,19 @@ You are betting £100 on Betis to win +0.75 Asian handicap. The home team is the
 Porto @1.85 vs Benfica @2.00
 You are betting £100 on Porto to win -0.5 Asian handicap. We use the minus symbol (-) if the team has the lead by the betting markets.
 
-season  round	host	guest	host_points	guest_points	host_ranking	guest_ranking	主队胜率	客队胜率		host_form guest_form  init_host_win_odds	init_draw_odds	init_guest_win_odds	init_host_water	init_handicap	init_guest_water	final_host_win_odds	final_draw_odds	final_guest_win_odds	final_host_water	final_handicap	final_guest_water		host_score	guest_score
+season  round	host  guest
+host_points	 guest_points  host_ranking  guest_ranking
+主队胜率	客队胜率	 host_form  guest_form
+init_host_win_odds	init_draw_odds	init_guest_win_odds
+final_host_win_odds	final_draw_odds	final_guest_win_odds
+init_host_water	    init_handicap   init_guest_water
+final_host_water	final_handicap	final_guest_water
+host_score	guest_score
 
-wwwwwww
+There are 26 properties as shown above to describe the status of match between host and guest
+host_points and guest_points for a prominent team has higher weight than a regular team
+
+
 
 a list has only six elements, which can only be 'w', 'd', or 'l'
 Each position in the list have its own weight, the first until the third has weight of 1, the fourth has 1.4, the fifth has 1.7, and the last has 2
